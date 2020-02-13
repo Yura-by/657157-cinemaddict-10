@@ -34,6 +34,12 @@ const getDateWatching = (isWaiting) => {
   return isWaiting ? new Date(getRandomNumber(1209600, Date.now())) : null;
 };
 
+const getComments = () => {
+  const randomNumber = getRandomNumber(0, 100);
+  return new Array(getRandomNumber(0, 10)).fill(``)
+    .map((it, index) => randomNumber + index);
+}
+
 const generateMovie = () => {
   const alreadyWatched = Math.random() > 0.5;
   return {
@@ -60,7 +66,8 @@ const generateMovie = () => {
       alreadyWatched,
       watchingDate: getDateWatching(alreadyWatched),
       favorite: Math.random() > 0.5
-    }
+    },
+    comments: getComments()
   };
 };
 

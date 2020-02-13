@@ -1,11 +1,24 @@
-export const createMovieTemplate = () => {
+const getDurationInFormat = (duration) => {
+  const hour = Math.floor(duration / 60);
+  const minutes = duration % 60;
+  const hoursTemplate = hour ? `${hour}h` : ``;
+  const minutesTemplate = minutes ? `${minutes}m` : ``;
+
+  return `${hoursTemplate}${minutesTemplate}`;
+};
+
+export const createMovieTemplate = (movie) => {
+  console.log(movie)
+  const {filmInfo: {poster}, filmInfo: {title}, filmInfo: {totalRating}, filmInfo: {release: {date}}, filmInfo: {runtime}, filmInfo: {genre}, filmInfo: {description}, filmInfo: {comments}} = movie;
+  const duration = getDurationInFormat(runtime);
+  const year = date.getFullYear();
   return (
     `<article class="film-card">
-      <h3 class="film-card__title">The Dance of Life</h3>
-      <p class="film-card__rating">8.3</p>
+      <h3 class="film-card__title">${title}</h3>
+      <p class="film-card__rating">${totalRating}</p>
       <p class="film-card__info">
-        <span class="film-card__year">1929</span>
-        <span class="film-card__duration">1h 55m</span>
+        <span class="film-card__year">${year}</span>
+        <span class="film-card__duration">${duration}</span>
         <span class="film-card__genre">Musical</span>
       </p>
       <img src="./images/posters/the-dance-of-life.jpg" alt="" class="film-card__poster">
@@ -15,78 +28,6 @@ export const createMovieTemplate = () => {
         <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">Add to watchlist</button>
         <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">Mark as watched</button>
         <button class="film-card__controls-item button film-card__controls-item--favorite">Mark as favorite</button>
-      </form>
-    </article>
-
-    <article class="film-card">
-      <h3 class="film-card__title">Sagebrush Trail</h3>
-      <p class="film-card__rating">3.2</p>
-      <p class="film-card__info">
-        <span class="film-card__year">1933</span>
-        <span class="film-card__duration">54m</span>
-        <span class="film-card__genre">Western</span>
-      </p>
-      <img src="./images/posters/sagebrush-trail.jpg" alt="" class="film-card__poster">
-      <p class="film-card__description">Sentenced for a murder he did not commit, John Brant escapes from prison determined to find the real killer. By chance Brant's narrow escap…</p>
-      <a class="film-card__comments">89 comments</a>
-      <form class="film-card__controls">
-        <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist film-card__controls-item--active">Add to watchlist</button>
-        <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">Mark as watched</button>
-        <button class="film-card__controls-item button film-card__controls-item--favorite">Mark as favorite</button>
-      </form>
-    </article>
-
-    <article class="film-card">
-      <h3 class="film-card__title">The Man with the Golden Arm</h3>
-      <p class="film-card__rating">9.0</p>
-      <p class="film-card__info">
-        <span class="film-card__year">1955</span>
-        <span class="film-card__duration">1h 59m</span>
-        <span class="film-card__genre">Drama</span>
-      </p>
-      <img src="./images/posters/the-man-with-the-golden-arm.jpg" alt="" class="film-card__poster">
-      <p class="film-card__description">Frankie Machine (Frank Sinatra) is released from the federal Narcotic Farm in Lexington, Kentucky with a set of drums and a new outlook on…</p>
-      <a class="film-card__comments">18 comments</a>
-      <form class="film-card__controls">
-        <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">Add to watchlist</button>
-        <button class="film-card__controls-item button film-card__controls-item--mark-as-watched film-card__controls-item--active">Mark as watched</button>
-        <button class="film-card__controls-item button film-card__controls-item--favorite">Mark as favorite</button>
-      </form>
-    </article>
-
-    <article class="film-card">
-      <h3 class="film-card__title">Santa Claus Conquers the Martians</h3>
-      <p class="film-card__rating">2.3</p>
-      <p class="film-card__info">
-        <span class="film-card__year">1964</span>
-        <span class="film-card__duration">1h 21m</span>
-        <span class="film-card__genre">Comedy</span>
-      </p>
-      <img src="./images/posters/santa-claus-conquers-the-martians.jpg" alt="" class="film-card__poster">
-      <p class="film-card__description">The Martians Momar ("Mom Martian") and Kimar ("King Martian") are worried that their children Girmar ("Girl Martian") and Bomar ("Boy Marti…</p>
-      <a class="film-card__comments">465 comments</a>
-      <form class="film-card__controls">
-        <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">Add to watchlist</button>
-        <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">Mark as watched</button>
-        <button class="film-card__controls-item button film-card__controls-item--favorite film-card__controls-item--active">Mark as favorite</button>
-      </form>
-    </article>
-
-    <article class="film-card">
-      <h3 class="film-card__title">Popeye the Sailor Meets Sindbad the Sailor</h3>
-      <p class="film-card__rating">6.3</p>
-      <p class="film-card__info">
-        <span class="film-card__year">1936</span>
-        <span class="film-card__duration">16m</span>
-        <span class="film-card__genre">Cartoon</span>
-      </p>
-      <img src="./images/posters/popeye-meets-sinbad.png" alt="" class="film-card__poster">
-      <p class="film-card__description">In this short, Sindbad the Sailor (presumably Bluto playing a "role") proclaims himself, in song, to be the greatest sailor, adventurer and…</p>
-      <a class="film-card__comments">0 comments</a>
-      <form class="film-card__controls">
-        <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist film-card__controls-item--active">Add to watchlist</button>
-        <button class="film-card__controls-item button film-card__controls-item--mark-as-watched film-card__controls-item--active">Mark as watched</button>
-        <button class="film-card__controls-item button film-card__controls-item--favorite film-card__controls-item--active">Mark as favorite</button>
       </form>
     </article>`
   );
