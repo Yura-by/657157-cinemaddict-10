@@ -17,8 +17,8 @@ const getRandomElementFromArray = (array) => {
   return array[getRandomNumber(0, (array.length - 1))];
 };
 
-const getRandomArray = (array, length = 3) => {
-  return Array(getRandomNumber(0, length)).fill(``)
+const getRandomArray = (array, length = 3, minValue = 0) => {
+  return Array(getRandomNumber(minValue, length)).fill(``)
     .map(() => getRandomElementFromArray(array));
 };
 
@@ -27,7 +27,7 @@ const getRandomDate = () => {
 };
 
 const getDescription = (sentenses) => {
-  return getRandomArray(sentenses, getRandomNumber(1, 5));
+  return getRandomArray(sentenses, getRandomNumber(1, 5), 1);
 };
 
 const getDateWatching = (isWaiting) => {
@@ -38,7 +38,7 @@ const getComments = () => {
   const randomNumber = getRandomNumber(0, 100);
   return new Array(getRandomNumber(0, 10)).fill(``)
     .map((it, index) => randomNumber + index);
-}
+};
 
 const generateMovie = () => {
   const alreadyWatched = Math.random() > 0.5;
@@ -50,14 +50,14 @@ const generateMovie = () => {
       poster: getRandomElementFromArray(POSTERS),
       ageRating: getRandomNumber(6, 18),
       director: getRandomElementFromArray(DIRECTORS),
-      writers: getRandomArray(WRITERS),
-      actors: getRandomArray(WRITERS, 4),
+      writers: getRandomArray(WRITERS, 2, 1),
+      actors: getRandomArray(WRITERS, 4, 1),
       release: {
         date: getRandomDate(),
         releaseCountry: getRandomElementFromArray(COUNTRIES)
       },
       runtime: getRandomNumber(0, 230),
-      genre: getRandomArray(GENRES),
+      genre: getRandomArray(GENRES, 3, 1),
       description: getDescription(SENTENCES_DESCRIPTION)
     },
     userDetails: {
