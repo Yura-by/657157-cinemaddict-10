@@ -1,4 +1,21 @@
+const RATING_COUNT = 9;
+const CORRECT_INDEX = 1;
+
+const createControlsMarkup = (rating) => {
+  const isCheckedIndex = Math.floor(rating);
+  return new Array(RATING_COUNT).fill(``)
+    .map((it, index) => {
+      const number = index + CORRECT_INDEX;
+      return (
+        `<input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="${number}" id="rating-${number}" ${isCheckedIndex === number ? `checked` : ``}>
+        <label class="film-details__user-rating-label" for="rating-${number}">${number}</label>`
+      );
+    }).join(`\n`);
+};
+
 export const createRatingTemplate = (movie) => {
+  const {filmInfo: {title}, filmInfo: {poster}, userDetails: {personalRating}} = movie;
+  const contolsMarkup = createControlsMarkup(personalRating);
   return (
     `<div class="form-details__middle-container">
       <section class="film-details__user-rating-wrap">
@@ -8,42 +25,16 @@ export const createRatingTemplate = (movie) => {
 
         <div class="film-details__user-score">
           <div class="film-details__user-rating-poster">
-            <img src="./images/posters/the-great-flamarion.jpg" alt="film-poster" class="film-details__user-rating-img">
+            <img src="${poster}" class="film-details__user-rating-img">
           </div>
 
           <section class="film-details__user-rating-inner">
-            <h3 class="film-details__user-rating-title">The Great Flamarion</h3>
+            <h3 class="film-details__user-rating-title">${title}</h3>
 
             <p class="film-details__user-rating-feelings">How you feel it?</p>
 
             <div class="film-details__user-rating-score">
-              <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="1" id="rating-1">
-              <label class="film-details__user-rating-label" for="rating-1">1</label>
-
-              <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="2" id="rating-2">
-              <label class="film-details__user-rating-label" for="rating-2">2</label>
-
-              <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="3" id="rating-3">
-              <label class="film-details__user-rating-label" for="rating-3">3</label>
-
-              <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="4" id="rating-4">
-              <label class="film-details__user-rating-label" for="rating-4">4</label>
-
-              <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="5" id="rating-5">
-              <label class="film-details__user-rating-label" for="rating-5">5</label>
-
-              <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="6" id="rating-6">
-              <label class="film-details__user-rating-label" for="rating-6">6</label>
-
-              <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="7" id="rating-7">
-              <label class="film-details__user-rating-label" for="rating-7">7</label>
-
-              <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="8" id="rating-8">
-              <label class="film-details__user-rating-label" for="rating-8">8</label>
-
-              <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="9" id="rating-9" checked>
-              <label class="film-details__user-rating-label" for="rating-9">9</label>
-
+              ${contolsMarkup}
             </div>
           </section>
         </div>

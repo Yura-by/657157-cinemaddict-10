@@ -1,3 +1,5 @@
+import {Emotion} from '../const.js';
+
 const TITLES = [`A Man Who Stole The Storm`, `Raiders Who Sold Us`, `A Tale Of A Little Bird In The Void`, `A Tale Of A Little Bird On The Void`, `Laziness Within The Wall`, `Laziness Who Sold The Carpet`, `Guest Who Stole The Carpet`, `A Shark Who Sold The Void`, `A Tale Of A Little Bird Within The Wall`, `Guest Who Stole Him`, `Friends In The Storm`, `Country Who Sold Us`, `Country Who Bought Us`, `A Lion Who Saw The Wall`, `Country In The Room`, `Raiders Who Sold Himself`, `A Tale Of A Little Bird Within Themselves`, `Pioneers Without The Void`, `A Little Pony With The Room`, `A Little Pony With The Storm`];
 const ALTERNATIVE_TITLES = [`Guest Who Saw Him`, `A Lion Who Sold The Void`, `A Tale Of A Little Bird On The Storm`, `Country In The Void`, `A Little Pony With Him`, `Pioneers Who Sold Himself`, `Country Who Sold Themselves`, `Friends On Themselves`, `Friends Who Stole Him`, `Country Who Sold The Wall`, `Laziness Of The Wall`, `Happiness Who Sold The Room`, `A Tale Of A Little Bird Of Him`, `A Man Who Sold Himself`, `A Little Pony Within The Floor`, `A Lion Who Sold Us`, `Friends Of The Wall`, `A Little Pony With The Darkness`, `Country With The Wall`, `A Shark Without Himself`];
 const POSTERS = [`images/posters/made-for-each-other.png`, `images/posters/popeye-meets-sinbad.png`, `images/posters/santa-claus-conquers-the-martians.jpg`, `images/posters/the-man-with-the-golden-arm.jpg`, `images/posters/the-man-with-the-golden-arm.jpg`, `images/posters/santa-claus-conquers-the-martians.jpg`, `images/posters/popeye-meets-sinbad.png`, `images/posters/sagebrush-trail.jpg`, `images/posters/made-for-each-other.png`, `images/posters/sagebrush-trail.jpg`, `images/posters/made-for-each-other.png`, `images/posters/the-man-with-the-golden-arm.jpg`, `images/posters/the-great-flamarion.jpg`, `images/posters/the-man-with-the-golden-arm.jpg`, `images/posters/the-man-with-the-golden-arm.jpg`, `images/posters/the-man-with-the-golden-arm.jpg`, `images/posters/sagebrush-trail.jpg`, `images/posters/the-dance-of-life.jpg`, `images/posters/santa-claus-conquers-the-martians.jpg`, `images/posters/santa-claus-conquers-the-martians.jpg`];
@@ -31,13 +33,25 @@ const getDescription = (sentenses) => {
 };
 
 const getDateWatching = (isWaiting) => {
-  return isWaiting ? new Date(getRandomNumber(1209600, Date.now())) : null;
+  return isWaiting ? new Date(getRandomNumber(1567382400000, Date.now())) : null;
+};
+
+const createComment = (id) => {
+  return {
+    id,
+    author: String(getRandomElementFromArray(DIRECTORS)),
+    emotion: String(getRandomElementFromArray(Emotion)),
+    comment: String(getDescription(SENTENCES_DESCRIPTION)),
+    date: String(getDateWatching(true).toISOString())
+  };
 };
 
 const getComments = () => {
   const randomNumber = getRandomNumber(0, 100);
-  return new Array(getRandomNumber(0, 10)).fill(``)
-    .map((it, index) => randomNumber + index);
+  return new Array(getRandomNumber(0, 6)).fill(``)
+    .map((it, index) => {
+      return createComment(randomNumber + index);
+    });
 };
 
 const generateMovie = () => {
@@ -61,7 +75,7 @@ const generateMovie = () => {
       description: getDescription(SENTENCES_DESCRIPTION)
     },
     userDetails: {
-      personalRating: getRandomNumber(0, 10),
+      personalRating: getRandomNumber(1, 9),
       watchlist: Math.random() > 0.5,
       alreadyWatched,
       watchingDate: getDateWatching(alreadyWatched),
@@ -76,4 +90,4 @@ const generateMovies = (count) => {
     .map(() => generateMovie());
 };
 
-export {generateMovie, generateMovies};
+export {generateMovie, generateMovies, getRandomNumber, getRandomElementFromArray, DIRECTORS, getDescription, SENTENCES_DESCRIPTION, getDateWatching};

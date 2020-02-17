@@ -16,6 +16,8 @@ const COUNT_START_MOVIES = 5;
 
 const movies = generateMovies(COUNT_MOVIES);
 
+console.log(movies)
+
 
 
 

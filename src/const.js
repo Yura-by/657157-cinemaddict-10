@@ -11,4 +11,6 @@ const Sort = {
   RATING: `rating`
 };
 
-export {Filter, Sort};
+const Emotion = [`smile`, `sleeping`, `puke`, `angry`];
+
+export {Filter, Sort, Emotion};

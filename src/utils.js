@@ -4,7 +4,7 @@ const getDurationInFormat = (duration) => {
   const hoursTemplate = hour ? `${hour}h` : ``;
   const minutesTemplate = minutes ? `${minutes}m` : ``;
 
-  return `${hoursTemplate}${minutesTemplate}`;
+  return `${hoursTemplate} ${minutesTemplate}`;
 };
 
 export {getDurationInFormat};
