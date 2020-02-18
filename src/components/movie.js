@@ -1,6 +1,9 @@
 import {getDurationInFormat} from '../utils';
 
 export const createMovieTemplate = (movie) => {
+  if (!movie) {
+    return ``;
+  }
   const {filmInfo: {poster}, filmInfo: {title}, filmInfo: {totalRating}, filmInfo: {release: {date}}, filmInfo: {runtime}, filmInfo: {genre}, filmInfo: {description}, comments} = movie;
   const duration = getDurationInFormat(runtime);
   const year = date.getFullYear();

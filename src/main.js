@@ -11,8 +11,9 @@ import {Filter, Sort} from './const.js';
 import {createMovieInfoTemplane} from './components/movie-info.js';
 import {createFooterTemplate} from './footer.js';
 
-const COUNT_MOVIES = 24;
-const COUNT_START_MOVIES = 5;
+const COUNT_MOVIES = 17;
+const SHOWING_MOVIES_ON_START = 5;
+const SHOWING_MOVIES_BY_BUTTON = 5;
 
 const movies = generateMovies(COUNT_MOVIES);
 
@@ -78,17 +79,34 @@ render(filmsListElement, createMoviesContainerTemplate(), `beforeend`);
 
 const moviesContainerElement = document.querySelector(`.films-list__container`);
 
-new Array(COUNT_START_MOVIES).fill(``)
-  .forEach((it, index) => render(moviesContainerElement, createMovieTemplate(movies[index]), `beforeend`));
+movies.slice(0, SHOWING_MOVIES_ON_START)
+  .forEach((movie) => render(moviesContainerElement, createMovieTemplate(movie), `beforeend`));
 
-render(filmsListElement, createShowMoreButtonTemplate(), `beforeend`);
+render(filmsListElement, createShowMoreButtonTemplate(movies.length), `beforeend`);
+
+let showMovie = SHOWING_MOVIES_ON_START;
+
+const buttonElement = filmsListElement.querySelector(`.films-list__show-more`);
+
+if (buttonElement) {
+    buttonElement.addEventListener(`click` , () => {
+      const startMovie = showMovie;
+      showMovie += SHOWING_MOVIES_BY_BUTTON;
+      movies.slice(startMovie, showMovie).forEach((movie) => render(moviesContainerElement, createMovieTemplate(movie), `beforeend`));
+      if (showMovie >= movies.length) {
+        buttonElement.remove();
+      }
+    });
+}
 
 const filmsElement = document.querySelector(`.films`);
 
-render(filmsElement, createExtraTemplate(), `beforeend`);
+render(filmsElement, createExtraTemplate(movies), `beforeend`);
 
-render(mainElement, createFooterTemplate(), `afterend`);
+render(mainElement, createFooterTemplate(movies), `afterend`);
 
 const footerElement = document.querySelector(`.footer`);
 
-render(footerElement, createMovieInfoTemplane(movies[0]), `afterend`);
+//render(footerElement, createMovieInfoTemplane(movies[0]), `afterend`);
+
+export {SHOWING_MOVIES_ON_START};
