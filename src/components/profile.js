@@ -1,10 +1,12 @@
+import {createElement} from '../utils/render.js';
+
 const Status = {
   NOVISE: `Novice`,
   FAN: `Fan`,
   BUFF: `Movie Buff`
 };
 
-export const createProfileTemplate = (countWatched) => {
+const createProfileTemplate = (countWatched) => {
   let status = ``;
   switch (true) {
     case countWatched > 0 && countWatched <= 10 :
@@ -25,3 +27,23 @@ export const createProfileTemplate = (countWatched) => {
     </section>`
   );
 };
+
+export default class Profile {
+  constructor(count) {
+    this._element = null;
+    this._count = count;
+  }
+
+  getTemplate() {
+    return this._element = createProfileTemplate(this._count);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(getTemplate());
+    }
+
+    return this._element;
+  }
+};
+

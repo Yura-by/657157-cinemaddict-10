@@ -1,3 +1,5 @@
+import {createElement} from '../utils/render.js';
+
 const gateDifferenceDays = (dateComment) => {
   const startDate = new Date(dateComment);
   const dateNow = Date.now();
@@ -33,7 +35,7 @@ const getCommentsMarkup = (comments) => {
   }).join(`\n`);
 };
 
-export const createCommentsTemplane = (movie) => {
+const createCommentsTemplane = (movie) => {
   const {comments} = movie;
   const countComments= comments.length;
   const commentsMarkup = getCommentsMarkup(comments);
@@ -78,4 +80,23 @@ export const createCommentsTemplane = (movie) => {
       </section>
     </div>`
   );
+};
+
+export default class MovieComments {
+  constructor(movie) {
+    this._element = null;
+    this._movie = movie;
+  }
+
+  getTemplate() {
+    return this._element = createCommentsTemplane(this._movie);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(getTemplate());
+    }
+
+    return this._element;
+  }
 };

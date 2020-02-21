@@ -13,4 +13,9 @@ const Sort = {
 
 const Emotion = [`smile`, `sleeping`, `puke`, `angry`];
 
-export {Filter, Sort, Emotion};
+export const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`
+};
+
+export {Filter, Sort, Emotion, RenderPosition};

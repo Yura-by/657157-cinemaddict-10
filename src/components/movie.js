@@ -1,4 +1,5 @@
-import {getDurationInFormat} from '../utils';
+import {getDurationInFormat} from '../utils/common.js';
+import {createElement} from '../utils/render.js';
 
 export const createMovieTemplate = (movie) => {
   if (!movie) {
@@ -28,4 +29,23 @@ export const createMovieTemplate = (movie) => {
       </form>
     </article>`
   );
+};
+
+export default class Movie {
+  constructor(movie) {
+    this._element = null;
+    this._movie = movie;
+  }
+
+  getTemplate() {
+    return this._element = createMovieTemplate(this._movie);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(getTemplate());
+    }
+
+    return this._element;
+  }
 };

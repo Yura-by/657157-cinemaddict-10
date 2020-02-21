@@ -1,15 +1,16 @@
-import {createProfileTemplate} from './components/profile.js';
-import {createSiteFilterTemplate} from './components/site-filter.js';
-import {createSortTemplate} from './components/sort.js';
-import {createFilmsElement} from './components/films.js';
-import {createMoviesContainerTemplate} from './components/movies-container.js';
-import {createShowMoreButtonTemplate} from './components/show-more.js';
-import {createExtraTemplate} from './components/extra.js';
-import {createMovieTemplate} from './components/movie.js';
+import {ProfileComponent} from './components/profile.js';
+import {FilterComponent} from './components/site-filter.js';
+import {SortComponent} from './components/sort.js';
+import {FilmsComponent} from './components/films.js';
+import {MovieContainerComponent} from './components/movies-container.js';
+import {ShoeMoreComponent} from './components/show-more.js';
+import {ExtraComponent} from './components/extra.js';
+import {MovieComponent} from './components/movie.js';
+import {FooterComponent} from './components/footer.js';
+import {MovieInfoComponent} from './components/movie-info.js';
 import {generateMovies} from './mock/movie.js';
-import {Filter, Sort} from './const.js';
-import {createMovieInfoTemplane} from './components/movie-info.js';
-import {createFooterTemplate} from './footer.js';
+import {Filter, Sort, RenderPosition} from './const.js';
+import {render} from './utils/render.js';
 
 const COUNT_MOVIES = 17;
 const SHOWING_MOVIES_ON_START = 5;

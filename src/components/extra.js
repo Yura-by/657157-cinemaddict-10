@@ -1,4 +1,5 @@
 import {createMovieTemplate} from './movie.js';
+import {createElement} from '../utils/render.js';
 
 const getCardsMarkup = (movies) => {
   return movies.map((movie) => {
@@ -24,7 +25,7 @@ const Title = {
   COMMENT: `Most commented`
 };
 
-export const createExtraTemplate = (movies) => {
+const createExtraTemplate = (movies) => {
   let topsRating = movies.slice()
     .sort((left, right) => right.filmInfo.totalRating - left.filmInfo.totalRating)
     .slice(0, 2);
@@ -43,4 +44,23 @@ export const createExtraTemplate = (movies) => {
     `${extraRatingTemplate}
     ${extraCommentsTemplate}`
   );
+};
+
+export default class Extra {
+  constructor(movies) {
+    this._element = null;
+    this._movies = movies;
+  }
+
+  getTemplate() {
+    return this._element = createExtraTemplate(this._movies);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(getTemplate());
+    }
+
+    return this._element;
+  }
 };

@@ -1,4 +1,5 @@
-import {getDurationInFormat} from '../utils';
+import {getDurationInFormat} from '../utils/common.js';
+import {createElement} from '../utils/render.js';
 
 const Month = [
   `January`,
@@ -21,7 +22,7 @@ const getFilmsGenresMarkup = (genres) => {
   }).join(`\n`);
 };
 
-export const createDescriptionTemplate = (movie) => {
+const createDescriptionTemplate = (movie) => {
   const {filmInfo: {title}, filmInfo: {alternativeTitle}, filmInfo: {totalRating}, filmInfo: {poster}, filmInfo: {ageRating}, filmInfo: {director}, filmInfo: {writers}, filmInfo: {actors}, filmInfo: {release: {date}}, filmInfo: {release: {releaseCountry}}, filmInfo: {runtime}, filmInfo: {genre}, filmInfo: {description}, userDetails: {personalRating}, userDetails: {watchlist}, userDetails: {alreadyWatched}, userDetails: {favorite}} = movie;
   const writersString = writers.join(`, `);
   const actorsString = actors.join(`, `);
@@ -105,3 +106,23 @@ export const createDescriptionTemplate = (movie) => {
     </div>`
   );
 };
+
+export default class MovieDescription {
+  constructor(movie) {
+    this._element = null;
+    this._movie = movie;
+  }
+
+  getTemplate() {
+    return this._element = createDescriptionTemplate(this._movie);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(getTemplate());
+    }
+
+    return this._element;
+  }
+};
+

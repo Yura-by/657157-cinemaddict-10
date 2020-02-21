@@ -1,3 +1,5 @@
+import {createElement} from '../utils/render.js';
+
 const getLinksMarkup = (filters) => {
   return filters.map((it, index) => {
     const {name, count} = it;
@@ -10,7 +12,7 @@ const getLinksMarkup = (filters) => {
   .join(`\n`);
 };
 
-export const createSiteFilterTemplate = (filters) => {
+const createSiteFilterTemplate = (filters) => {
   const linksMarkup = getLinksMarkup(filters);
   return (
     `<nav class="main-navigation">
@@ -18,4 +20,23 @@ export const createSiteFilterTemplate = (filters) => {
       <a href="#stats" class="main-navigation__item main-navigation__item--additional">Stats</a>
     </nav>`
   );
+};
+
+export default class Extra {
+  constructor(filters) {
+    this._element = null;
+    this._filters = filters;
+  }
+
+  getTemplate() {
+    return this._element = createSiteFilterTemplate(this._filters);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(getTemplate());
+    }
+
+    return this._element;
+  }
 };

@@ -1,5 +1,6 @@
 const RATING_COUNT = 9;
 const CORRECT_INDEX = 1;
+import {createElement} from '../utils/render.js';
 
 const createControlsMarkup = (rating) => {
   const isCheckedIndex = Math.floor(rating);
@@ -13,7 +14,7 @@ const createControlsMarkup = (rating) => {
     }).join(`\n`);
 };
 
-export const createRatingTemplate = (movie) => {
+const createRatingTemplate = (movie) => {
   const {filmInfo: {title}, filmInfo: {poster}, userDetails: {personalRating}} = movie;
   const contolsMarkup = createControlsMarkup(personalRating);
   return (
@@ -41,4 +42,23 @@ export const createRatingTemplate = (movie) => {
       </section>
     </div>`
   );
+};
+
+export default class MovieRating {
+  constructor(movie) {
+    this._element = null;
+    this._movie = movie;
+  }
+
+  getTemplate() {
+    return this._element = createRatingTemplate(this._movie);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(getTemplate());
+    }
+
+    return this._element;
+  }
 };

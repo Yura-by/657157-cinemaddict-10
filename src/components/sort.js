@@ -1,3 +1,5 @@
+import {createElement} from '../utils/render.js';
+
 const getItemsMarkup = (sorts) => {
   return sorts.map((sort, index) => {
     const classActive = index === 0 ? `sort__button--active` : ``;
@@ -7,7 +9,7 @@ const getItemsMarkup = (sorts) => {
   }).join(`\n`);
 };
 
-export const createSortTemplate = (sorts) => {
+const createSortTemplate = (sorts) => {
   const itemsMarkup = getItemsMarkup(sorts);
   return (
     `<ul class="sort">
@@ -16,6 +18,21 @@ export const createSortTemplate = (sorts) => {
   `);
 };
 
-/*<li><a href="#" class="sort__button sort__button--active">Sort by default</a></li>
-      <li><a href="#" class="sort__button">Sort by date</a></li>
-      <li><a href="#" class="sort__button">Sort by rating</a></li>*/
+export default class Extra {
+  constructor(sorts) {
+    this._element = null;
+    this._sorts = sorts;
+  }
+
+  getTemplate() {
+    return this._element = createSortTemplate(this._sorts);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(getTemplate());
+    }
+
+    return this._element;
+  }
+};
