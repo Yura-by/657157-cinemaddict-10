@@ -31,13 +31,13 @@ const getCommentsMarkup = (comments) => {
           </p>
         </div>
       </li>`
-    )
+    );
   }).join(`\n`);
 };
 
 const createCommentsTemplane = (movie) => {
   const {comments} = movie;
-  const countComments= comments.length;
+  const countComments = comments.length;
   const commentsMarkup = getCommentsMarkup(comments);
   return (
     `<div class="form-details__bottom-container">
@@ -89,14 +89,14 @@ export default class MovieComments {
   }
 
   getTemplate() {
-    return this._element = createCommentsTemplane(this._movie);
+    return createCommentsTemplane(this._movie);
   }
 
   getElement() {
     if (!this._element) {
-      this._element = createElement(getTemplate());
+      this._element = createElement(this.getTemplate());
     }
 
     return this._element;
   }
-};
+}

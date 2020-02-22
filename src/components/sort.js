@@ -5,7 +5,7 @@ const getItemsMarkup = (sorts) => {
     const classActive = index === 0 ? `sort__button--active` : ``;
     return (
       `<li><a href="#" class="sort__button ${classActive}">Sort by ${sort}</a></li>`
-    )
+    );
   }).join(`\n`);
 };
 
@@ -25,14 +25,14 @@ export default class Extra {
   }
 
   getTemplate() {
-    return this._element = createSortTemplate(this._sorts);
+    return createSortTemplate(this._sorts);
   }
 
   getElement() {
     if (!this._element) {
-      this._element = createElement(getTemplate());
+      this._element = createElement(this.getTemplate());
     }
 
     return this._element;
   }
-};
+}

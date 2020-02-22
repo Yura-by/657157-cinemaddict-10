@@ -51,14 +51,14 @@ export default class MovieRating {
   }
 
   getTemplate() {
-    return this._element = createRatingTemplate(this._movie);
+    return createRatingTemplate(this._movie);
   }
 
   getElement() {
     if (!this._element) {
-      this._element = createElement(getTemplate());
+      this._element = createElement(this.getTemplate());
     }
 
     return this._element;
   }
-};
+}

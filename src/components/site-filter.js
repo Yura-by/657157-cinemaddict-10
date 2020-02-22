@@ -7,7 +7,7 @@ const getLinksMarkup = (filters) => {
     const activeClass = index === 0 ? `main-navigation__item--active` : ``;
     return (
       `<a href="#" class="main-navigation__item ${activeClass}">${name} ${countMarkup}</a>`
-    )
+    );
   })
   .join(`\n`);
 };
@@ -29,14 +29,14 @@ export default class Extra {
   }
 
   getTemplate() {
-    return this._element = createSiteFilterTemplate(this._filters);
+    return createSiteFilterTemplate(this._filters);
   }
 
   getElement() {
     if (!this._element) {
-      this._element = createElement(getTemplate());
+      this._element = createElement(this.getTemplate());
     }
 
     return this._element;
   }
-};
+}

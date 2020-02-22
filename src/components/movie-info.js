@@ -1,6 +1,6 @@
-import {MovieDescriptionComponent} from './movie-description.js';
-import {MovieRatingComponent} from './movie-rating.js';
-import {MovieCommentsComponent} from './movie-comments.js';
+import MovieDescriptionComponent from './movie-description.js';
+import MovieRatingComponent from './movie-rating.js';
+import MovieCommentsComponent from './movie-comments.js';
 import {createElement} from '../utils/render.js';
 
 const createMovieInfoTemplane = (movie, description, rating, comments) => {
@@ -28,14 +28,14 @@ export default class MovieInfo {
   }
 
   getTemplate() {
-    return this._element = createMovieInfoTemplane(this._movie, this._descriptionComponent, this._ratingComponent, this._commentsComponent);
+    return createMovieInfoTemplane(this._movie, this._descriptionComponent, this._ratingComponent, this._commentsComponent);
   }
 
   getElement() {
     if (!this._element) {
-      this._element = createElement(getTemplate());
+      this._element = createElement(this.getTemplate());
     }
 
     return this._element;
   }
-};
+}

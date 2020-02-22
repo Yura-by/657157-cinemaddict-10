@@ -13,7 +13,7 @@ const Sort = {
 
 const Emotion = [`smile`, `sleeping`, `puke`, `angry`];
 
-export const RenderPosition = {
+const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`
 };

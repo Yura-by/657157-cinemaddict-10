@@ -16,14 +16,14 @@ export default class Films {
   }
 
   getTemplate() {
-    return this._element = createFilmsElement();
+    return createFilmsElement();
   }
 
   getElement() {
     if (!this._element) {
-      this._element = createElement(getTemplate());
+      this._element = createElement(this.getTemplate());
     }
 
     return this._element;
   }
-};
+}

@@ -38,14 +38,14 @@ export default class Movie {
   }
 
   getTemplate() {
-    return this._element = createMovieTemplate(this._movie);
+    return createMovieTemplate(this._movie);
   }
 
   getElement() {
     if (!this._element) {
-      this._element = createElement(getTemplate());
+      this._element = createElement(this.getTemplate());
     }
 
     return this._element;
   }
-};
+}

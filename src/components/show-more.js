@@ -13,14 +13,14 @@ export default class ShowMore {
   }
 
   getTemplate() {
-    return this._element = createShowMoreButtonTemplate(this._lengths);
+    return createShowMoreButtonTemplate(this._lengths);
   }
 
   getElement() {
     if (!this._element) {
-      this._element = createElement(getTemplate());
+      this._element = createElement(this.getTemplate());
     }
 
     return this._element;
   }
-};
+}

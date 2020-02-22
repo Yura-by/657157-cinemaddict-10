@@ -1,13 +1,14 @@
-import {ProfileComponent} from './components/profile.js';
-import {FilterComponent} from './components/site-filter.js';
-import {SortComponent} from './components/sort.js';
-import {FilmsComponent} from './components/films.js';
-import {MovieContainerComponent} from './components/movies-container.js';
-import {ShoeMoreComponent} from './components/show-more.js';
-import {ExtraComponent} from './components/extra.js';
-import {MovieComponent} from './components/movie.js';
-import {FooterComponent} from './components/footer.js';
-import {MovieInfoComponent} from './components/movie-info.js';
+import ProfileComponent from './components/profile.js';
+import FilterComponent from './components/site-filter.js';
+import SortComponent from './components/sort.js';
+import FilmsComponent from './components/films.js';
+import MovieContainerComponent from './components/movies-container.js';
+import ShowMoreComponent from './components/show-more.js';
+import ExtraRatingComponent from './components/extra-rating.js';
+import ExtraCommentsComponent from './components/extra-comments.js';
+import MovieComponent from './components/movie.js';
+import FooterComponent from './components/footer.js';
+import MovieInfoComponent from './components/movie-info.js';
 import {generateMovies} from './mock/movie.js';
 import {Filter, Sort, RenderPosition} from './const.js';
 import {render} from './utils/render.js';
@@ -65,49 +66,47 @@ const getAlreadyWatched = () => {
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 
-const render = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
-};
-
-render(headerElement, createProfileTemplate(getAlreadyWatched()), `beforeend`);
-render(mainElement, createSiteFilterTemplate(getFilters()), `beforebegin`);
-render(mainElement, createSortTemplate(getSorts()), `beforeend`);
-render(mainElement, createFilmsElement(), `beforeend`);
+render(headerElement, new ProfileComponent(getAlreadyWatched()).getElement(), RenderPosition.BEFOREEND);
+render(mainElement, new FilterComponent(getFilters()).getElement(), RenderPosition.AFTERBEGIN);
+render(mainElement, new SortComponent(getSorts()).getElement(), RenderPosition.BEFOREEND);
+render(mainElement, new FilmsComponent().getElement(), RenderPosition.BEFOREEND);
 
 const filmsListElement = mainElement.querySelector(`.films-list`);
 
-render(filmsListElement, createMoviesContainerTemplate(), `beforeend`);
+render(filmsListElement, new MovieContainerComponent().getElement(), RenderPosition.BEFOREEND);
 
 const moviesContainerElement = document.querySelector(`.films-list__container`);
 
 movies.slice(0, SHOWING_MOVIES_ON_START)
-  .forEach((movie) => render(moviesContainerElement, createMovieTemplate(movie), `beforeend`));
+  .forEach((movie) => render(moviesContainerElement, new MovieComponent(movie).getElement(), RenderPosition.BEFOREEND));
 
-render(filmsListElement, createShowMoreButtonTemplate(movies.length), `beforeend`);
+render(filmsListElement, new ShowMoreComponent(movies.length).getElement(), RenderPosition.BEFOREEND);
 
 let showMovie = SHOWING_MOVIES_ON_START;
 
 const buttonElement = filmsListElement.querySelector(`.films-list__show-more`);
 
 if (buttonElement) {
-    buttonElement.addEventListener(`click` , () => {
-      const startMovie = showMovie;
-      showMovie += SHOWING_MOVIES_BY_BUTTON;
-      movies.slice(startMovie, showMovie).forEach((movie) => render(moviesContainerElement, createMovieTemplate(movie), `beforeend`));
-      if (showMovie >= movies.length) {
-        buttonElement.remove();
-      }
-    });
+  buttonElement.addEventListener(`click`, () => {
+    const startMovie = showMovie;
+    showMovie += SHOWING_MOVIES_BY_BUTTON;
+    movies.slice(startMovie, showMovie).forEach((movie) => render(moviesContainerElement, new MovieComponent(movie).getElement(), RenderPosition.BEFOREEND));
+    if (showMovie >= movies.length) {
+      buttonElement.remove();
+    }
+  });
 }
 
 const filmsElement = document.querySelector(`.films`);
 
-render(filmsElement, createExtraTemplate(movies), `beforeend`);
+render(filmsElement, new ExtraRatingComponent(movies).getElement(), RenderPosition.BEFOREEND);
 
-render(mainElement, createFooterTemplate(movies), `afterend`);
+render(filmsElement, new ExtraCommentsComponent(movies).getElement(), RenderPosition.BEFOREEND);
+
+render(document.body, new FooterComponent(movies).getElement(), RenderPosition.BEFOREEND);
 
 const footerElement = document.querySelector(`.footer`);
 
-//render(footerElement, createMovieInfoTemplane(movies[0]), `afterend`);
+render(footerElement, new MovieInfoComponent(movies[0]).getElement(), RenderPosition.BEFOREEND);
 
 export {SHOWING_MOVIES_ON_START};

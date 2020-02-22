@@ -114,15 +114,14 @@ export default class MovieDescription {
   }
 
   getTemplate() {
-    return this._element = createDescriptionTemplate(this._movie);
+    return createDescriptionTemplate(this._movie);
   }
 
   getElement() {
     if (!this._element) {
-      this._element = createElement(getTemplate());
+      this._element = createElement(this.getTemplate());
     }
 
     return this._element;
   }
-};
-
+}

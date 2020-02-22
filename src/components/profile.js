@@ -35,15 +35,14 @@ export default class Profile {
   }
 
   getTemplate() {
-    return this._element = createProfileTemplate(this._count);
+    return createProfileTemplate(this._count);
   }
 
   getElement() {
     if (!this._element) {
-      this._element = createElement(getTemplate());
+      this._element = createElement(this.getTemplate());
     }
 
     return this._element;
   }
-};
-
+}

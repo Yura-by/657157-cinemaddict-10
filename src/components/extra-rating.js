@@ -1,6 +1,11 @@
 import {createMovieTemplate} from './movie.js';
 import {createElement} from '../utils/render.js';
 
+const Title = {
+  RATING: `Top rated`,
+  COMMENT: `Most commented`
+};
+
 const getCardsMarkup = (movies) => {
   return movies.map((movie) => {
     return createMovieTemplate(movie);
@@ -20,11 +25,6 @@ const createFilmsExtraTemplate = (movies, title) => {
   ) : ``;
 };
 
-const Title = {
-  RATING: `Top rated`,
-  COMMENT: `Most commented`
-};
-
 const createExtraTemplate = (movies) => {
   let topsRating = movies.slice()
     .sort((left, right) => right.filmInfo.totalRating - left.filmInfo.totalRating)
@@ -32,35 +32,29 @@ const createExtraTemplate = (movies) => {
   if (topsRating.length > 0 && topsRating[0].totalRating === 0) {
     topsRating = [];
   }
-  let topsComments = movies.slice()
-    .sort((left, right) => right.comments.length - left.comments.length)
-    .slice(0, 2);
-  if (topsComments.length > 0 && topsComments[0].comments.length === 0) {
-    topsComments = [];
-  }
   const extraRatingTemplate = createFilmsExtraTemplate(topsRating, Title.RATING);
-  const extraCommentsTemplate = createFilmsExtraTemplate(topsComments, Title.COMMENT);
   return (
-    `${extraRatingTemplate}
-    ${extraCommentsTemplate}`
+    `${extraRatingTemplate}`
   );
 };
 
-export default class Extra {
+export default class ExtraRating {
   constructor(movies) {
     this._element = null;
     this._movies = movies;
   }
 
   getTemplate() {
-    return this._element = createExtraTemplate(this._movies);
+    return createExtraTemplate(this._movies);
   }
 
   getElement() {
     if (!this._element) {
-      this._element = createElement(getTemplate());
+      this._element = createElement(this.getTemplate());
     }
 
     return this._element;
   }
-};
+}
+
+export {Title, createFilmsExtraTemplate};
