@@ -19,8 +19,6 @@ const SHOWING_MOVIES_BY_BUTTON = 5;
 
 const movies = generateMovies(COUNT_MOVIES);
 
-console.log(movies)
-
 
 
 
@@ -77,22 +75,61 @@ render(filmsListElement, new MovieContainerComponent().getElement(), RenderPosit
 
 const moviesContainerElement = document.querySelector(`.films-list__container`);
 
-movies.slice(0, SHOWING_MOVIES_ON_START)
-  .forEach((movie) => render(moviesContainerElement, new MovieComponent(movie).getElement(), RenderPosition.BEFOREEND));
 
-render(filmsListElement, new ShowMoreComponent(movies.length).getElement(), RenderPosition.BEFOREEND);
+const renderMovie = (movieContainerElement, movie) => {
+  const movieComponent = new MovieComponent(movie);
+  const posterElement = movieComponent.getElement().querySelector(`.film-card__poster`);
+  const titleElement = movieComponent.getElement().querySelector(`.film-card__title`);
+  const commentElement = movieComponent.getElement().querySelector(`.film-card__comments`);
+  const movieInfoComponent = new MovieInfoComponent(movie);
+  const closeInfoElement = movieInfoComponent.getElement().querySelector(`.film-details__close-btn`);
+
+  const hideInfoElement = () => {
+    movieInfoComponent.getElement().remove();
+    document.removeEventListener(`keydown`, onKeyDown);
+  };
+
+  const onKeyDown = (evt) => {
+    if (evt.key === `Escape` || evt.key === `Esc`) {
+      hideInfoElement();
+    }
+  };
+
+  const showInfoElement = () => {
+    render(document.body, movieInfoComponent.getElement(), RenderPosition.BEFOREEND);
+    document.addEventListener(`keydown`, onKeyDown);
+  };
+
+  posterElement.addEventListener(`click`, () => showInfoElement());
+  titleElement.addEventListener(`click`, () => showInfoElement());
+  commentElement.addEventListener(`click`, () => showInfoElement());
+
+  closeInfoElement.addEventListener(`click`, () => {
+    hideInfoElement();
+  });
+
+  render(movieContainerElement, movieComponent.getElement(), RenderPosition.BEFOREEND);
+};
+
+movies.slice(0, SHOWING_MOVIES_ON_START)
+  .forEach((movie) => renderMovie(moviesContainerElement, movie));
+
+const loadButtonComponent = new ShowMoreComponent(movies.length);
+
+render(filmsListElement, loadButtonComponent.getElement(), RenderPosition.BEFOREEND);
 
 let showMovie = SHOWING_MOVIES_ON_START;
 
 const buttonElement = filmsListElement.querySelector(`.films-list__show-more`);
 
 if (buttonElement) {
-  buttonElement.addEventListener(`click`, () => {
+  loadButtonComponent.getElement().addEventListener(`click`, () => {
     const startMovie = showMovie;
     showMovie += SHOWING_MOVIES_BY_BUTTON;
-    movies.slice(startMovie, showMovie).forEach((movie) => render(moviesContainerElement, new MovieComponent(movie).getElement(), RenderPosition.BEFOREEND));
+    movies.slice(startMovie, showMovie).forEach((movie) => renderMovie(moviesContainerElement, movie));
     if (showMovie >= movies.length) {
       buttonElement.remove();
+      loadButtonComponent.removeElement();
     }
   });
 }
@@ -105,8 +142,4 @@ render(filmsElement, new ExtraCommentsComponent(movies).getElement(), RenderPosi
 
 render(document.body, new FooterComponent(movies).getElement(), RenderPosition.BEFOREEND);
 
-const footerElement = document.querySelector(`.footer`);
-
-render(footerElement, new MovieInfoComponent(movies[0]).getElement(), RenderPosition.BEFOREEND);
-
-export {SHOWING_MOVIES_ON_START};
+export {SHOWING_MOVIES_ON_START, renderMovie};

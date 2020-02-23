@@ -1,5 +1,6 @@
 import {createMovieTemplate} from './movie.js';
 import {createElement} from '../utils/render.js';
+import {renderMovie} from '../main.js';
 
 const Title = {
   RATING: `Top rated`,

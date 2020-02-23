@@ -23,4 +23,8 @@ export default class ShowMore {
 
     return this._element;
   }
+
+  removeElement() {
+    this._element = null;
+  }
 }
