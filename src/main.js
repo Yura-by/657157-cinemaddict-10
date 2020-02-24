@@ -12,6 +12,7 @@ import MovieInfoComponent from './components/movie-info.js';
 import {generateMovies} from './mock/movie.js';
 import {Filter, Sort, RenderPosition} from './const.js';
 import {render} from './utils/render.js';
+import {getRatingMovies, getCommentsMovies} from './utils/extra.js';
 
 const COUNT_MOVIES = 17;
 const SHOWING_MOVIES_ON_START = 5;
@@ -63,11 +64,12 @@ const getAlreadyWatched = () => {
 
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
+const filmsComponent = new FilmsComponent();
 
 render(headerElement, new ProfileComponent(getAlreadyWatched()).getElement(), RenderPosition.BEFOREEND);
 render(mainElement, new FilterComponent(getFilters()).getElement(), RenderPosition.AFTERBEGIN);
 render(mainElement, new SortComponent(getSorts()).getElement(), RenderPosition.BEFOREEND);
-render(mainElement, new FilmsComponent().getElement(), RenderPosition.BEFOREEND);
+render(mainElement, filmsComponent.getElement(), RenderPosition.BEFOREEND);
 
 const filmsListElement = mainElement.querySelector(`.films-list`);
 
@@ -136,9 +138,27 @@ if (buttonElement) {
 
 const filmsElement = document.querySelector(`.films`);
 
-render(filmsElement, new ExtraRatingComponent(movies).getElement(), RenderPosition.BEFOREEND);
+const extraRatingMovies = getRatingMovies(movies);
+const extraRatingComponent = new ExtraRatingComponent(extraRatingMovies);
+const extraRatingMoviesContainer = extraRatingComponent.getElement().querySelector(`.films-list__container`);
 
-render(filmsElement, new ExtraCommentsComponent(movies).getElement(), RenderPosition.BEFOREEND);
+if (extraRatingMoviesContainer) {
+  extraRatingMovies.forEach((movie) => {
+    renderMovie(extraRatingMoviesContainer, movie);
+  });
+  render(filmsElement, extraRatingComponent.getElement(), RenderPosition.BEFOREEND);
+}
+
+const extraCommentsMovies = getCommentsMovies(movies);
+const extraCommentsComponent = new ExtraCommentsComponent(extraCommentsMovies);
+const extraCommentsMoviesContainer = extraCommentsComponent.getElement().querySelector(`.films-list__container`);
+
+if (extraCommentsMoviesContainer) {
+  extraCommentsMovies.forEach((movie) => {
+    renderMovie(extraCommentsMoviesContainer, movie);
+  });
+  render(filmsElement, extraCommentsComponent.getElement(), RenderPosition.BEFOREEND);
+}
 
 render(document.body, new FooterComponent(movies).getElement(), RenderPosition.BEFOREEND);
 

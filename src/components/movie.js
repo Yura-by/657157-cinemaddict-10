@@ -1,7 +1,7 @@
 import {getDurationInFormat} from '../utils/common.js';
 import {createElement} from '../utils/render.js';
 
-export const createMovieTemplate = (movie) => {
+const createMovieTemplate = (movie) => {
   if (!movie) {
     return ``;
   }
