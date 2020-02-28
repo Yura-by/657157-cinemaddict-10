@@ -31,16 +31,22 @@ const generateFilter = (allMovies, name) => {
 };
 
 const getCountByFilter = (allMovies, filterName) => {
+  let result;
   switch (filterName) {
     case Filter.ALL:
-      return null;
+      result = null;
+      break;
     case Filter.WATCHLIST:
-      return allMovies.filter((movie) => movie.userDetails.watchlist).length;
+      result = allMovies.filter((movie) => movie.userDetails.watchlist).length;
+      break;
     case Filter.HISTORY:
-      return allMovies.filter((movie) => movie.userDetails.alreadyWatched).length;
+      result = allMovies.filter((movie) => movie.userDetails.alreadyWatched).length;
+      break;
     case Filter.FAVORITES:
-      return allMovies.filter((movie) => movie.userDetails.favorite).length;
+      result = allMovies.filter((movie) => movie.userDetails.favorite).length;
+      break;
   }
+  return result;
 };
 
 const getFilters = () => {
