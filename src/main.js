@@ -22,7 +22,6 @@ const movies = generateMovies(COUNT_MOVIES);
 
 
 
-
 const generateFilter = (allMovies, name) => {
   return {
     name,
@@ -53,13 +52,9 @@ const getFilters = () => {
   return Object.values(Filter).map((filterName) => generateFilter(movies, filterName));
 };
 
-
-
-
 const getSorts = () => {
   return Object.values(Sort);
 };
-
 
 const getAlreadyWatched = () => {
   return movies.filter((movie) => movie.userDetails.alreadyWatched).length;
@@ -67,22 +62,66 @@ const getAlreadyWatched = () => {
 
 
 
+const renderScreen = (allMovies, container) => {
+  const filmsComponent = new FilmsComponent();
+  if (allMovies.length === 0) {
+    filmsComponent.setNoFilmsTemplate();
+    render(container, filmsComponent.getElement(), RenderPosition.BEFOREEND);
+    return;
+  }
+  render(mainElement, new SortComponent(getSorts()).getElement(), RenderPosition.BEFOREEND);
+  render(mainElement, filmsComponent.getElement(), RenderPosition.BEFOREEND);
+  const filmsListElement = mainElement.querySelector(`.films-list`);
 
-const headerElement = document.querySelector(`.header`);
-const mainElement = document.querySelector(`.main`);
-const filmsComponent = new FilmsComponent();
+  render(filmsListElement, new MovieContainerComponent().getElement(), RenderPosition.BEFOREEND);
+  const moviesContainerElement = document.querySelector(`.films-list__container`);
+  movies.slice(0, SHOWING_MOVIES_ON_START)
+  .forEach((movie) => renderMovie(moviesContainerElement, movie));
 
-render(headerElement, new ProfileComponent(getAlreadyWatched()).getElement(), RenderPosition.BEFOREEND);
-render(mainElement, new FilterComponent(getFilters()).getElement(), RenderPosition.AFTERBEGIN);
-render(mainElement, new SortComponent(getSorts()).getElement(), RenderPosition.BEFOREEND);
-render(mainElement, filmsComponent.getElement(), RenderPosition.BEFOREEND);
+  const loadButtonComponent = new ShowMoreComponent(movies.length);
 
-const filmsListElement = mainElement.querySelector(`.films-list`);
+  render(filmsListElement, loadButtonComponent.getElement(), RenderPosition.BEFOREEND);
 
-render(filmsListElement, new MovieContainerComponent().getElement(), RenderPosition.BEFOREEND);
+  let showMovie = SHOWING_MOVIES_ON_START;
 
-const moviesContainerElement = document.querySelector(`.films-list__container`);
+  const buttonElement = filmsListElement.querySelector(`.films-list__show-more`);
 
+  if (buttonElement) {
+    loadButtonComponent.getElement().addEventListener(`click`, () => {
+      const startMovie = showMovie;
+      showMovie += SHOWING_MOVIES_BY_BUTTON;
+      movies.slice(startMovie, showMovie).forEach((movie) => renderMovie(moviesContainerElement, movie));
+      if (showMovie >= movies.length) {
+        buttonElement.remove();
+        loadButtonComponent.removeElement();
+      }
+    });
+  }
+
+  const filmsElement = document.querySelector(`.films`);
+
+  const extraRatingMovies = getRatingMovies(movies);
+  const extraRatingComponent = new ExtraRatingComponent(extraRatingMovies);
+  const extraRatingMoviesContainer = extraRatingComponent.getElement().querySelector(`.films-list__container`);
+
+  if (extraRatingMoviesContainer) {
+    extraRatingMovies.forEach((movie) => {
+      renderMovie(extraRatingMoviesContainer, movie);
+    });
+    render(filmsElement, extraRatingComponent.getElement(), RenderPosition.BEFOREEND);
+  }
+
+  const extraCommentsMovies = getCommentsMovies(movies);
+  const extraCommentsComponent = new ExtraCommentsComponent(extraCommentsMovies);
+  const extraCommentsMoviesContainer = extraCommentsComponent.getElement().querySelector(`.films-list__container`);
+
+  if (extraCommentsMoviesContainer) {
+    extraCommentsMovies.forEach((movie) => {
+      renderMovie(extraCommentsMoviesContainer, movie);
+    });
+    render(filmsElement, extraCommentsComponent.getElement(), RenderPosition.BEFOREEND);
+  }
+};
 
 const renderMovie = (movieContainerElement, movie) => {
   const movieComponent = new MovieComponent(movie);
@@ -119,53 +158,15 @@ const renderMovie = (movieContainerElement, movie) => {
   render(movieContainerElement, movieComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
-movies.slice(0, SHOWING_MOVIES_ON_START)
-  .forEach((movie) => renderMovie(moviesContainerElement, movie));
 
-const loadButtonComponent = new ShowMoreComponent(movies.length);
+const headerElement = document.querySelector(`.header`);
+const mainElement = document.querySelector(`.main`);
 
-render(filmsListElement, loadButtonComponent.getElement(), RenderPosition.BEFOREEND);
-
-let showMovie = SHOWING_MOVIES_ON_START;
-
-const buttonElement = filmsListElement.querySelector(`.films-list__show-more`);
-
-if (buttonElement) {
-  loadButtonComponent.getElement().addEventListener(`click`, () => {
-    const startMovie = showMovie;
-    showMovie += SHOWING_MOVIES_BY_BUTTON;
-    movies.slice(startMovie, showMovie).forEach((movie) => renderMovie(moviesContainerElement, movie));
-    if (showMovie >= movies.length) {
-      buttonElement.remove();
-      loadButtonComponent.removeElement();
-    }
-  });
-}
-
-const filmsElement = document.querySelector(`.films`);
-
-const extraRatingMovies = getRatingMovies(movies);
-const extraRatingComponent = new ExtraRatingComponent(extraRatingMovies);
-const extraRatingMoviesContainer = extraRatingComponent.getElement().querySelector(`.films-list__container`);
-
-if (extraRatingMoviesContainer) {
-  extraRatingMovies.forEach((movie) => {
-    renderMovie(extraRatingMoviesContainer, movie);
-  });
-  render(filmsElement, extraRatingComponent.getElement(), RenderPosition.BEFOREEND);
-}
-
-const extraCommentsMovies = getCommentsMovies(movies);
-const extraCommentsComponent = new ExtraCommentsComponent(extraCommentsMovies);
-const extraCommentsMoviesContainer = extraCommentsComponent.getElement().querySelector(`.films-list__container`);
-
-if (extraCommentsMoviesContainer) {
-  extraCommentsMovies.forEach((movie) => {
-    renderMovie(extraCommentsMoviesContainer, movie);
-  });
-  render(filmsElement, extraCommentsComponent.getElement(), RenderPosition.BEFOREEND);
-}
+render(headerElement, new ProfileComponent(getAlreadyWatched()).getElement(), RenderPosition.BEFOREEND);
+render(mainElement, new FilterComponent(getFilters()).getElement(), RenderPosition.AFTERBEGIN);
 
 render(document.body, new FooterComponent(movies).getElement(), RenderPosition.BEFOREEND);
+
+renderScreen(movies, mainElement);
 
 export {SHOWING_MOVIES_ON_START, renderMovie};
