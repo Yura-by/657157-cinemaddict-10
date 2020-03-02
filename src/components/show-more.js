@@ -1,14 +1,13 @@
 import {SHOWING_MOVIES_ON_START} from '../main.js';
-import {createElement} from '../utils/render.js';
-
+import AbstractComponent from './abstract-component.js';
 
 const createShowMoreButtonTemplate = (lengthMovies) => {
   return lengthMovies > SHOWING_MOVIES_ON_START ? `<button class="films-list__show-more">Show more</button>` : ``;
 };
 
-export default class ShowMore {
+export default class ShowMore extends AbstractComponent {
   constructor(lengths) {
-    this._element = null;
+    super();
     this._lengths = lengths;
   }
 
@@ -16,15 +15,7 @@ export default class ShowMore {
     return createShowMoreButtonTemplate(this._lengths);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setButtonHandler(handler) {
+    this.getElement().addEventListener(`click`, handler);
   }
 }

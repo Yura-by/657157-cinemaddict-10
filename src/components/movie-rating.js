@@ -1,6 +1,7 @@
+import AbstractComponent from './abstract-component.js';
+
 const RATING_COUNT = 9;
 const CORRECT_INDEX = 1;
-import {createElement} from '../utils/render.js';
 
 const createControlsMarkup = (rating) => {
   const isCheckedIndex = Math.floor(rating);
@@ -44,21 +45,13 @@ const createRatingTemplate = (movie) => {
   );
 };
 
-export default class MovieRating {
+export default class MovieRating extends AbstractComponent {
   constructor(movie) {
-    this._element = null;
+    super();
     this._movie = movie;
   }
 
   getTemplate() {
     return createRatingTemplate(this._movie);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
   }
 }

@@ -1,4 +1,4 @@
-import {createElement} from '../utils/render.js';
+import AbstractComponent from './abstract-component.js';
 import {Title, createFilmsExtraTemplate} from './extra-rating.js';
 
 const createExtraTemplate = (movies) => {
@@ -8,22 +8,14 @@ const createExtraTemplate = (movies) => {
   );
 };
 
-export default class ExtraComments {
+export default class ExtraComments extends AbstractComponent {
   constructor(movies) {
-    this._element = null;
+    super();
     this._movies = movies;
   }
 
   getTemplate() {
     return createExtraTemplate(this._movies);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
   }
 }
 

@@ -1,5 +1,5 @@
 import {getDurationInFormat} from '../utils/common.js';
-import {createElement} from '../utils/render.js';
+import AbstractComponent from './abstract-component.js';
 
 const Month = [
   `January`,
@@ -107,21 +107,13 @@ const createDescriptionTemplate = (movie) => {
   );
 };
 
-export default class MovieDescription {
+export default class MovieDescription extends AbstractComponent {
   constructor(movie) {
-    this._element = null;
+    super();
     this._movie = movie;
   }
 
   getTemplate() {
     return createDescriptionTemplate(this._movie);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
   }
 }

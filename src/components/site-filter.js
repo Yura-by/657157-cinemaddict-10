@@ -1,4 +1,4 @@
-import {createElement} from '../utils/render.js';
+import AbstractComponent from './abstract-component.js';
 
 const getLinksMarkup = (filters) => {
   return filters.map((it, index) => {
@@ -22,21 +22,13 @@ const createSiteFilterTemplate = (filters) => {
   );
 };
 
-export default class Extra {
+export default class Extra extends AbstractComponent {
   constructor(filters) {
-    this._element = null;
+    super();
     this._filters = filters;
   }
 
   getTemplate() {
     return createSiteFilterTemplate(this._filters);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
   }
 }

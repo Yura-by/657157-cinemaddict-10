@@ -1,4 +1,4 @@
-import {createElement} from '../utils/render.js';
+import AbstractComponent from './abstract-component.js';
 
 const createFooterTemplate = (movies) => {
   const countMovies = movies.length;
@@ -12,21 +12,13 @@ const createFooterTemplate = (movies) => {
   );
 };
 
-export default class Footer {
+export default class Footer extends AbstractComponent {
   constructor(movies) {
-    this._element = null;
+    super();
     this._movies = movies;
   }
 
   getTemplate() {
     return createFooterTemplate(this._movies);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
   }
 }

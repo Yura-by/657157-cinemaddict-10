@@ -1,4 +1,4 @@
-import {createElement} from '../utils/render.js';
+import AbstractComponent from './abstract-component.js';
 
 const gateDifferenceDays = (dateComment) => {
   const startDate = new Date(dateComment);
@@ -82,9 +82,9 @@ const createCommentsTemplane = (movie) => {
   );
 };
 
-export default class MovieComments {
+export default class MovieComments extends AbstractComponent {
   constructor(movie) {
-    this._element = null;
+    super();
     this._movie = movie;
   }
 
@@ -92,11 +92,4 @@ export default class MovieComments {
     return createCommentsTemplane(this._movie);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
 }

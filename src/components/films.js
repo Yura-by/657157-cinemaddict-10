@@ -1,4 +1,4 @@
-import {createElement} from '../utils/render.js';
+import AbstractComponent from './abstract-component.js';
 
 const TEXT_NO_MOVIES = `There are no movies in our database`;
 
@@ -12,21 +12,9 @@ const createFilmsElement = () => {
   );
 };
 
-export default class Films {
-  constructor() {
-    this._element = null;
-  }
-
+export default class Films extends AbstractComponent {
   getTemplate() {
     return createFilmsElement();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
   }
 
   setNoFilmsTemplate() {

@@ -11,7 +11,7 @@ import FooterComponent from './components/footer.js';
 import MovieInfoComponent from './components/movie-info.js';
 import {generateMovies} from './mock/movie.js';
 import {Filter, Sort, RenderPosition} from './const.js';
-import {render} from './utils/render.js';
+import {render, remove} from './utils/render.js';
 import {getRatingMovies, getCommentsMovies} from './utils/extra.js';
 
 const COUNT_MOVIES = 17;
@@ -66,36 +66,35 @@ const renderScreen = (allMovies, container) => {
   const filmsComponent = new FilmsComponent();
   if (allMovies.length === 0) {
     filmsComponent.setNoFilmsTemplate();
-    render(container, filmsComponent.getElement(), RenderPosition.BEFOREEND);
+    render(container, filmsComponent, RenderPosition.BEFOREEND);
     return;
   }
-  render(mainElement, new SortComponent(getSorts()).getElement(), RenderPosition.BEFOREEND);
-  render(mainElement, filmsComponent.getElement(), RenderPosition.BEFOREEND);
+  render(mainElement, new SortComponent(getSorts()), RenderPosition.BEFOREEND);
+  render(mainElement, filmsComponent, RenderPosition.BEFOREEND);
   const filmsListElement = mainElement.querySelector(`.films-list`);
 
-  render(filmsListElement, new MovieContainerComponent().getElement(), RenderPosition.BEFOREEND);
+  render(filmsListElement, new MovieContainerComponent(), RenderPosition.BEFOREEND);
   const moviesContainerElement = document.querySelector(`.films-list__container`);
   movies.slice(0, SHOWING_MOVIES_ON_START)
   .forEach((movie) => renderMovie(moviesContainerElement, movie));
 
   const loadButtonComponent = new ShowMoreComponent(movies.length);
 
-  render(filmsListElement, loadButtonComponent.getElement(), RenderPosition.BEFOREEND);
+  render(filmsListElement, loadButtonComponent, RenderPosition.BEFOREEND);
 
   let showMovie = SHOWING_MOVIES_ON_START;
 
-  const buttonElement = filmsListElement.querySelector(`.films-list__show-more`);
+  const onButtonMoreClick = () => {
+    const startMovie = showMovie;
+    showMovie += SHOWING_MOVIES_BY_BUTTON;
+    movies.slice(startMovie, showMovie).forEach((movie) => renderMovie(moviesContainerElement, movie));
+    if (showMovie >= movies.length) {
+      remove(loadButtonComponent);
+    }
+  };
 
-  if (buttonElement) {
-    loadButtonComponent.getElement().addEventListener(`click`, () => {
-      const startMovie = showMovie;
-      showMovie += SHOWING_MOVIES_BY_BUTTON;
-      movies.slice(startMovie, showMovie).forEach((movie) => renderMovie(moviesContainerElement, movie));
-      if (showMovie >= movies.length) {
-        buttonElement.remove();
-        loadButtonComponent.removeElement();
-      }
-    });
+  if (allMovies.length > 0) {
+    loadButtonComponent.setButtonHandler(onButtonMoreClick);
   }
 
   const filmsElement = document.querySelector(`.films`);
@@ -108,7 +107,7 @@ const renderScreen = (allMovies, container) => {
     extraRatingMovies.forEach((movie) => {
       renderMovie(extraRatingMoviesContainer, movie);
     });
-    render(filmsElement, extraRatingComponent.getElement(), RenderPosition.BEFOREEND);
+    render(filmsElement, extraRatingComponent, RenderPosition.BEFOREEND);
   }
 
   const extraCommentsMovies = getCommentsMovies(movies);
@@ -119,17 +118,14 @@ const renderScreen = (allMovies, container) => {
     extraCommentsMovies.forEach((movie) => {
       renderMovie(extraCommentsMoviesContainer, movie);
     });
-    render(filmsElement, extraCommentsComponent.getElement(), RenderPosition.BEFOREEND);
+    render(filmsElement, extraCommentsComponent, RenderPosition.BEFOREEND);
   }
 };
 
 const renderMovie = (movieContainerElement, movie) => {
   const movieComponent = new MovieComponent(movie);
-  const posterElement = movieComponent.getElement().querySelector(`.film-card__poster`);
-  const titleElement = movieComponent.getElement().querySelector(`.film-card__title`);
-  const commentElement = movieComponent.getElement().querySelector(`.film-card__comments`);
+
   const movieInfoComponent = new MovieInfoComponent(movie);
-  const closeInfoElement = movieInfoComponent.getElement().querySelector(`.film-details__close-btn`);
 
   const hideInfoElement = () => {
     movieInfoComponent.getElement().remove();
@@ -143,29 +139,27 @@ const renderMovie = (movieContainerElement, movie) => {
   };
 
   const showInfoElement = () => {
-    render(document.body, movieInfoComponent.getElement(), RenderPosition.BEFOREEND);
+    render(document.body, movieInfoComponent, RenderPosition.BEFOREEND);
     document.addEventListener(`keydown`, onKeyDown);
   };
 
-  posterElement.addEventListener(`click`, () => showInfoElement());
-  titleElement.addEventListener(`click`, () => showInfoElement());
-  commentElement.addEventListener(`click`, () => showInfoElement());
+  movieComponent.setPosterHandler(showInfoElement);
+  movieComponent.setTitleHandler(showInfoElement);
+  movieComponent.setCommentHandler(showInfoElement);
 
-  closeInfoElement.addEventListener(`click`, () => {
-    hideInfoElement();
-  });
+  movieInfoComponent.setCloseButtonHandler(hideInfoElement);
 
-  render(movieContainerElement, movieComponent.getElement(), RenderPosition.BEFOREEND);
+  render(movieContainerElement, movieComponent, RenderPosition.BEFOREEND);
 };
 
 
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 
-render(headerElement, new ProfileComponent(getAlreadyWatched()).getElement(), RenderPosition.BEFOREEND);
-render(mainElement, new FilterComponent(getFilters()).getElement(), RenderPosition.AFTERBEGIN);
+render(headerElement, new ProfileComponent(getAlreadyWatched()), RenderPosition.BEFOREEND);
+render(mainElement, new FilterComponent(getFilters()), RenderPosition.AFTERBEGIN);
 
-render(document.body, new FooterComponent(movies).getElement(), RenderPosition.BEFOREEND);
+render(document.body, new FooterComponent(movies), RenderPosition.BEFOREEND);
 
 renderScreen(movies, mainElement);
 

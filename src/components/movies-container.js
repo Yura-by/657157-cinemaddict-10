@@ -1,4 +1,4 @@
-import {createElement} from '../utils/render.js';
+import AbstractComponent from './abstract-component.js';
 
 const createMoviesContainerTemplate = () => {
   return (
@@ -6,21 +6,10 @@ const createMoviesContainerTemplate = () => {
   );
 };
 
-export default class MoviesContainer {
-  constructor() {
-    this._element = null;
-  }
+export default class MoviesContainer extends AbstractComponent {
 
   getTemplate() {
     return createMoviesContainerTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
   }
 }
 

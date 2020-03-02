@@ -1,9 +1,9 @@
 import MovieDescriptionComponent from './movie-description.js';
 import MovieRatingComponent from './movie-rating.js';
 import MovieCommentsComponent from './movie-comments.js';
-import {createElement} from '../utils/render.js';
+import AbstractComponent from './abstract-component.js';
 
-const createMovieInfoTemplane = (movie, description, rating, comments) => {
+const createMovieInfoTemplane = (description, rating, comments) => {
   const descriptionTemplate = description.getTemplate();
   const ratingTemplate = rating.getTemplate();
   const commentsTemplate = comments.getTemplate();
@@ -18,9 +18,9 @@ const createMovieInfoTemplane = (movie, description, rating, comments) => {
   );
 };
 
-export default class MovieInfo {
+export default class MovieInfo extends AbstractComponent {
   constructor(movie) {
-    this._element = null;
+    super();
     this._movie = movie;
     this._descriptionComponent = new MovieDescriptionComponent(movie);
     this._ratingComponent = new MovieRatingComponent(movie);
@@ -28,14 +28,11 @@ export default class MovieInfo {
   }
 
   getTemplate() {
-    return createMovieInfoTemplane(this._movie, this._descriptionComponent, this._ratingComponent, this._commentsComponent);
+    return createMovieInfoTemplane(this._descriptionComponent, this._ratingComponent, this._commentsComponent);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  setCloseButtonHandler(handler) {
+    const closeButtonElement = this.getElement().querySelector(`.film-details__close-btn`);
+    closeButtonElement.addEventListener(`click`, handler);
   }
 }

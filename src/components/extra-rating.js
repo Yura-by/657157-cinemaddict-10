@@ -1,4 +1,4 @@
-import {createElement} from '../utils/render.js';
+import AbstractComponent from './abstract-component.js';
 
 const Title = {
   RATING: `Top rated`,
@@ -23,22 +23,14 @@ const createExtraTemplate = (movies) => {
   );
 };
 
-export default class ExtraRating {
+export default class ExtraRating extends AbstractComponent {
   constructor(movies) {
-    this._element = null;
+    super();
     this._movies = movies;
   }
 
   getTemplate() {
     return createExtraTemplate(this._movies);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
   }
 }
 

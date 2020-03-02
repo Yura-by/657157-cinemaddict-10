@@ -1,4 +1,4 @@
-import {createElement} from '../utils/render.js';
+import AbstractComponent from './abstract-component.js';
 
 const getItemsMarkup = (sorts) => {
   return sorts.map((sort, index) => {
@@ -18,21 +18,13 @@ const createSortTemplate = (sorts) => {
   `);
 };
 
-export default class Extra {
+export default class Extra extends AbstractComponent {
   constructor(sorts) {
-    this._element = null;
+    super();
     this._sorts = sorts;
   }
 
   getTemplate() {
     return createSortTemplate(this._sorts);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
   }
 }

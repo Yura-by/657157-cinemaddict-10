@@ -1,4 +1,4 @@
-import {createElement} from '../utils/render.js';
+import AbstractComponent from './abstract-component.js';
 
 const Status = {
   NOVISE: `Novice`,
@@ -28,21 +28,13 @@ const createProfileTemplate = (countWatched) => {
   );
 };
 
-export default class Profile {
+export default class Profile extends AbstractComponent {
   constructor(count) {
-    this._element = null;
+    super();
     this._count = count;
   }
 
   getTemplate() {
     return createProfileTemplate(this._count);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
   }
 }

@@ -1,5 +1,5 @@
 import {getDurationInFormat} from '../utils/common.js';
-import {createElement} from '../utils/render.js';
+import AbstractComponent from './abstract-component.js';
 
 const createMovieTemplate = (movie) => {
   if (!movie) {
@@ -31,9 +31,9 @@ const createMovieTemplate = (movie) => {
   );
 };
 
-export default class Movie {
+export default class Movie extends AbstractComponent {
   constructor(movie) {
-    this._element = null;
+    super();
     this._movie = movie;
   }
 
@@ -41,11 +41,18 @@ export default class Movie {
     return createMovieTemplate(this._movie);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
+  setPosterHandler(handler) {
+    const posterElement = this.getElement().querySelector(`.film-card__poster`);
+    posterElement.addEventListener(`click`, handler);
+  }
 
-    return this._element;
+  setTitleHandler(handler) {
+    const titleElement = this.getElement().querySelector(`.film-card__title`);
+    titleElement.addEventListener(`click`, handler);
+  }
+
+  setCommentHandler(handler) {
+    const commentElement = this.getElement().querySelector(`.film-card__comments`);
+    commentElement.addEventListener(`click`, handler);
   }
 }
