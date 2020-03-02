@@ -1,4 +1,4 @@
-import {SHOWING_MOVIES_ON_START} from '../main.js';
+import {SHOWING_MOVIES_ON_START} from '../const.js';
 import AbstractComponent from './abstract-component.js';
 
 const createShowMoreButtonTemplate = (lengthMovies) => {
