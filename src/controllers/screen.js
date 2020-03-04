@@ -46,6 +46,12 @@ const renderMovie = (movieContainerElement, movie) => {
   render(movieContainerElement, movieComponent, RenderPosition.BEFOREEND);
 };
 
+const renderMovies = (movieContainerElement, movies) => {
+  movies.forEach((movie) => {
+    renderMovie(movieContainerElement, movie);
+  });
+};
+
 export default class ScreenController {
   constructor(container) {
     this._container = container;
@@ -55,6 +61,25 @@ export default class ScreenController {
   }
 
   render(allMovies) {
+
+    const renderLoadMoreButton = (length) => {
+      const loadButtonComponent = new ShowMoreComponent(length);
+      if (!loadButtonComponent.getElement()) {
+        return;
+      }
+      render(filmsListElement, loadButtonComponent, RenderPosition.BEFOREEND);
+
+      const onButtonMoreClick = () => {
+        const startMovie = showMovie;
+        showMovie += SHOWING_MOVIES_BY_BUTTON;
+        renderMovies(moviesContainerElement, allMovies.slice(startMovie, showMovie));
+        if (showMovie >= allMovies.length) {
+          remove(loadButtonComponent);
+        }
+      };
+      loadButtonComponent.setButtonHandler(onButtonMoreClick);
+    };
+
     if (allMovies.length === 0) {
       this._filmsComponent.setNoFilmsTemplate();
       render(this._container, this._filmsComponent, RenderPosition.BEFOREEND);
@@ -64,29 +89,13 @@ export default class ScreenController {
     render(this._container, this._filmsComponent, RenderPosition.BEFOREEND);
     const filmsListElement = this._container.querySelector(`.films-list`);
 
-    render(filmsListElement, this._movieContainerComponent, RenderPosition.BEFOREEND);
-    const moviesContainerElement = document.querySelector(`.films-list__container`);
-    allMovies.slice(0, SHOWING_MOVIES_ON_START)
-      .forEach((movie) => renderMovie(moviesContainerElement, movie));
-
-    const loadButtonComponent = new ShowMoreComponent(allMovies.length);
-
-    render(filmsListElement, loadButtonComponent, RenderPosition.BEFOREEND);
-
     let showMovie = SHOWING_MOVIES_ON_START;
 
-    const onButtonMoreClick = () => {
-      const startMovie = showMovie;
-      showMovie += SHOWING_MOVIES_BY_BUTTON;
-      allMovies.slice(startMovie, showMovie).forEach((movie) => renderMovie(moviesContainerElement, movie));
-      if (showMovie >= allMovies.length) {
-        remove(loadButtonComponent);
-      }
-    };
+    render(filmsListElement, this._movieContainerComponent, RenderPosition.BEFOREEND);
+    const moviesContainerElement = document.querySelector(`.films-list__container`);
 
-    if (allMovies.length > 0) {
-      loadButtonComponent.setButtonHandler(onButtonMoreClick);
-    }
+    renderMovies(moviesContainerElement, allMovies.slice(0, showMovie));
+    renderLoadMoreButton(allMovies.length);
 
     const filmsElement = document.querySelector(`.films`);
 
@@ -111,5 +120,35 @@ export default class ScreenController {
       });
       render(filmsElement, extraCommentsComponent, RenderPosition.BEFOREEND);
     }
+
+    this._sortsComponent.setSortTypeChangeHandler((sortType) => {
+      let sortMovies = [];
+      switch (sortType) {
+        case Sort.DATE:
+          sortMovies = allMovies.slice().sort((leftFilm, rightFilm) => rightFilm.filmInfo.release.date - leftFilm.filmInfo.release.date);
+          break;
+        case Sort.RATING:
+          sortMovies = allMovies.slice().sort((leftFilm, rightFilm) => rightFilm.filmInfo.totalRating - leftFilm.filmInfo.totalRating);
+          break;
+        case Sort.DEFAULT:
+          showMovie = SHOWING_MOVIES_ON_START;
+          sortMovies = allMovies.slice(0, showMovie);
+          break;
+      }
+
+      moviesContainerElement.innerHTML = ``;
+      renderMovies(moviesContainerElement, sortMovies);
+
+      const buttonElement = this._filmsComponent.getElement().querySelector(`.films-list__show-more`);
+
+      if (buttonElement) {
+        buttonElement.remove();
+      }
+
+      if (sortType === Sort.DEFAULT) {
+        renderLoadMoreButton(allMovies.length);
+      }
+    });
+
   }
 }

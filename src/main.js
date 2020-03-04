@@ -6,7 +6,7 @@ import {Filter, RenderPosition} from './const.js';
 import ScreenController from './controllers/screen.js';
 import {render} from './utils/render.js';
 
-const COUNT_MOVIES = 17;
+const COUNT_MOVIES = 9;
 
 const movies = generateMovies(COUNT_MOVIES);
 
