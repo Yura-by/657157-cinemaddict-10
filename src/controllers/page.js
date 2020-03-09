@@ -52,7 +52,7 @@ const renderMovies = (movieContainerElement, movies) => {
   });
 };
 
-export default class ScreenController {
+export default class PageController {
   constructor(container) {
     this._container = container;
     this._filmsComponent = new FilmsComponent();

@@ -3,7 +3,7 @@ import FilterComponent from './components/site-filter.js';
 import FooterComponent from './components/footer.js';
 import {generateMovies} from './mock/movie.js';
 import {Filter, RenderPosition} from './const.js';
-import ScreenController from './controllers/screen.js';
+import PageController from './controllers/page.js';
 import {render} from './utils/render.js';
 
 const COUNT_MOVIES = 9;
@@ -52,6 +52,6 @@ render(mainElement, new FilterComponent(getFilters()), RenderPosition.AFTERBEGIN
 
 render(document.body, new FooterComponent(movies), RenderPosition.BEFOREEND);
 
-const screenController = new ScreenController(mainElement);
+const pageController = new PageController(mainElement);
 
-screenController.render(movies);
+pageController.render(movies);

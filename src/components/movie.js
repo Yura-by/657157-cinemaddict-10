@@ -1,11 +1,13 @@
 import {getDurationInFormat} from '../utils/common.js';
 import AbstractComponent from './abstract-component.js';
 
+const ACTIVE_CLASS = `film-card__controls-item--active`;
+
 const createMovieTemplate = (movie) => {
   if (!movie) {
     return ``;
   }
-  const {filmInfo: {poster}, filmInfo: {title}, filmInfo: {totalRating}, filmInfo: {release: {date}}, filmInfo: {runtime}, filmInfo: {genre}, filmInfo: {description}, comments} = movie;
+  const {userDetails: {favorite}, userDetails: {alreadyWatched}, userDetails: {watchlist}, filmInfo: {poster}, filmInfo: {title}, filmInfo: {totalRating}, filmInfo: {release: {date}}, filmInfo: {runtime}, filmInfo: {genre}, filmInfo: {description}, comments} = movie;
   const duration = getDurationInFormat(runtime);
   const year = date.getFullYear();
   const genreFirst = genre[0];
@@ -23,9 +25,9 @@ const createMovieTemplate = (movie) => {
       <p class="film-card__description">${description}</p>
       <a class="film-card__comments">${countComments}</a>
       <form class="film-card__controls">
-        <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">Add to watchlist</button>
-        <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">Mark as watched</button>
-        <button class="film-card__controls-item button film-card__controls-item--favorite">Mark as favorite</button>
+        <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${watchlist ? ACTIVE_CLASS : ``}">Add to watchlist</button>
+        <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${alreadyWatched ? ACTIVE_CLASS : ``}">Mark as watched</button>
+        <button class="film-card__controls-item button film-card__controls-item--favorite ${favorite ? ACTIVE_CLASS : ``}">Mark as favorite</button>
       </form>
     </article>`
   );
