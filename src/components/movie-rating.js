@@ -15,8 +15,8 @@ const createControlsMarkup = (rating) => {
     }).join(`\n`);
 };
 
-const createRatingTemplate = (movie) => {
-  const {userDetails: {alreadyWatched}, filmInfo: {title}, filmInfo: {poster}, userDetails: {personalRating}} = movie;
+const createRatingTemplate = (movie, alreadyWatched, personalRating) => {
+  const {filmInfo: {title}, filmInfo: {poster}} = movie;
   const contolsMarkup = createControlsMarkup(personalRating);
   return alreadyWatched ? (
     `<div class="form-details__middle-container">
@@ -46,12 +46,14 @@ const createRatingTemplate = (movie) => {
 };
 
 export default class MovieRating extends AbstractComponent {
-  constructor(movie) {
+  constructor(movie, alreadyWatched, personalRating) {
     super();
     this._movie = movie;
+    this._alreadyWatched = alreadyWatched;
+    this._personalRating = personalRating;
   }
 
   getTemplate() {
-    return createRatingTemplate(this._movie);
+    return createRatingTemplate(this._movie, this._alreadyWatched, this._personalRating);
   }
 }

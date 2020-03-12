@@ -1,20 +1,6 @@
 import {getDurationInFormat} from '../utils/common.js';
 import AbstractComponent from './abstract-component.js';
-
-const Month = [
-  `January`,
-  `February`,
-  `March`,
-  `April`,
-  `May`,
-  `June`,
-  `July`,
-  `August`,
-  `September`,
-  `October`,
-  `November`,
-  `December`
-];
+import {getReleaseString} from '../utils/common.js';;
 
 const getFilmsGenresMarkup = (genres) => {
   return genres.map((genre) => {
@@ -22,11 +8,11 @@ const getFilmsGenresMarkup = (genres) => {
   }).join(`\n`);
 };
 
-const createDescriptionTemplate = (movie) => {
-  const {filmInfo: {title}, filmInfo: {alternativeTitle}, filmInfo: {totalRating}, filmInfo: {poster}, filmInfo: {ageRating}, filmInfo: {director}, filmInfo: {writers}, filmInfo: {actors}, filmInfo: {release: {date}}, filmInfo: {release: {releaseCountry}}, filmInfo: {runtime}, filmInfo: {genre}, filmInfo: {description}, userDetails: {personalRating}, userDetails: {watchlist}, userDetails: {alreadyWatched}, userDetails: {favorite}} = movie;
+const createDescriptionTemplate = (movie, alreadyWatched, personalRating) => {
+  const {filmInfo: {title}, filmInfo: {alternativeTitle}, filmInfo: {totalRating}, filmInfo: {poster}, filmInfo: {ageRating}, filmInfo: {director}, filmInfo: {writers}, filmInfo: {actors}, filmInfo: {release: {date}}, filmInfo: {release: {releaseCountry}}, filmInfo: {runtime}, filmInfo: {genre}, filmInfo: {description}, userDetails: {watchlist}, userDetails: {favorite}} = movie;
   const writersString = writers.join(`, `);
   const actorsString = actors.join(`, `);
-  const dateRelease = `${date.getDate()} ${Month[date.getMonth()]} ${date.getFullYear()}`;
+  const dateRelease = getReleaseString(date);
   const durationInFormat = getDurationInFormat(runtime);
   const genresTemplate = getFilmsGenresMarkup(genre);
 
@@ -108,12 +94,14 @@ const createDescriptionTemplate = (movie) => {
 };
 
 export default class MovieDescription extends AbstractComponent {
-  constructor(movie) {
+  constructor(movie, isWatched, personalRating) {
     super();
     this._movie = movie;
+    this._isWatched = isWatched;
+    this._personalRating = personalRating;
   }
 
   getTemplate() {
-    return createDescriptionTemplate(this._movie);
+    return createDescriptionTemplate(this._movie, this._isWatched, this._personalRating );
   }
 }

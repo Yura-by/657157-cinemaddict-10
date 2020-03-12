@@ -59,14 +59,14 @@ export default class MovieController {
       this._onDataChange(this, movie, Object.assign({}, movie, {userDetails: newMovieDetails}));
     });
 
-    this._infoComponent.setAsWatchedHandler(() => {
-      const newMovieDetails = Object.assign({}, movie.userDetails);
-      newMovieDetails.alreadyWatched = !movie.userDetails.alreadyWatched;
-      if (!newMovieDetails.alreadyWatched) {
-        newMovieDetails.personalRating = 0;
-      }
-      this._onDataChange(this, movie, Object.assign({}, movie, {userDetails: newMovieDetails}));
-    });
+    // this._infoComponent.setAsWatchedHandler(() => {
+    //   const newMovieDetails = Object.assign({}, movie.userDetails);
+    //   newMovieDetails.alreadyWatched = !movie.userDetails.alreadyWatched;
+    //   if (!newMovieDetails.alreadyWatched) {
+    //     newMovieDetails.personalRating = 0;
+    //   }
+    //   this._onDataChange(this, movie, Object.assign({}, movie, {userDetails: newMovieDetails}));
+    // });
 
     this._infoComponent.setFavoriteHandler(() => {
       const newMovieDetails = Object.assign({}, movie.userDetails);
@@ -84,10 +84,6 @@ export default class MovieController {
       const newMovieDetails = Object.assign({}, movie.userDetails);
       newMovieDetails.personalRating = rating;
       this._onDataChange(this, movie, Object.assign({}, movie, {userDetails: newMovieDetails}));
-    });
-
-    this._infoComponent.setEmojiHandler((url) => {
-      this._infoComponent.setEmojiImage(url);
     });
 
     this._infoComponent.setSubmitCommentHandler((commentContent) => {

@@ -1,22 +1,23 @@
 import AbstractComponent from './abstract-component.js';
+import {getCommentDate} from '../utils/common.js';
 
-const gateDifferenceDays = (dateComment) => {
-  const startDate = new Date(dateComment);
-  const dateNow = Date.now();
-  const resultDays = [];
+// const gateDifferenceDays = (dateComment) => {
+//   const startDate = new Date(dateComment);
+//   const dateNow = Date.now();
+//   const resultDays = [];
 
-  while (startDate < dateNow) {
-    resultDays.push(startDate.getTime());
-    startDate.setDate(startDate.getDate() + 1);
-  }
+//   while (startDate < dateNow) {
+//     resultDays.push(startDate.getTime());
+//     startDate.setDate(startDate.getDate() + 1);
+//   }
 
-  return resultDays.length;
-};
+//   return resultDays.length;
+// };
 
 const getCommentsMarkup = (comments) => {
   return comments.map((commentItem) => {
     const {emotion, comment, author, date} = commentItem;
-    const coutnDays = gateDifferenceDays(date);
+    const coutnDays = getCommentDate(date);
     return (
       `<li class="film-details__comment">
         <span class="film-details__comment-emoji">
@@ -26,7 +27,7 @@ const getCommentsMarkup = (comments) => {
           <p class="film-details__comment-text">${comment}</p>
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${author}</span>
-            <span class="film-details__comment-day">${coutnDays} days ago</span>
+            <span class="film-details__comment-day">${coutnDays}</span>
             <button class="film-details__comment-delete">Delete</button>
           </p>
         </div>
@@ -35,10 +36,11 @@ const getCommentsMarkup = (comments) => {
   }).join(`\n`);
 };
 
-const createCommentsTemplane = (movie) => {
+const createCommentsTemplane = (movie, urlEmoji) => {
   const {comments} = movie;
   const countComments = comments.length;
   const commentsMarkup = getCommentsMarkup(comments);
+  const imageMarkup = urlEmoji ? `<image class="film-details__add-emoji-image" src="${urlEmoji}" width="100%" height="100%" alt="Emotion">` : ``;
   return (
     `<div class="form-details__bottom-container">
       <section class="film-details__comments-wrap">
@@ -49,7 +51,7 @@ const createCommentsTemplane = (movie) => {
         </ul>
 
         <div class="film-details__new-comment">
-          <div for="add-emoji" class="film-details__add-emoji-label"></div>
+          <div for="add-emoji" class="film-details__add-emoji-label">${imageMarkup}</div>
 
           <label class="film-details__comment-label">
             <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
@@ -83,13 +85,13 @@ const createCommentsTemplane = (movie) => {
 };
 
 export default class MovieComments extends AbstractComponent {
-  constructor(movie) {
+  constructor(movie, urlEmoji) {
     super();
     this._movie = movie;
+    this._urlEmoji = urlEmoji;
   }
 
   getTemplate() {
-    return createCommentsTemplane(this._movie);
+    return createCommentsTemplane(this._movie, this._urlEmoji);
   }
-
 }
