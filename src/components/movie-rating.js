@@ -16,9 +16,9 @@ const createControlsMarkup = (rating) => {
 };
 
 const createRatingTemplate = (movie) => {
-  const {filmInfo: {title}, filmInfo: {poster}, userDetails: {personalRating}} = movie;
+  const {userDetails: {alreadyWatched}, filmInfo: {title}, filmInfo: {poster}, userDetails: {personalRating}} = movie;
   const contolsMarkup = createControlsMarkup(personalRating);
-  return (
+  return alreadyWatched ? (
     `<div class="form-details__middle-container">
       <section class="film-details__user-rating-wrap">
         <div class="film-details__user-rating-controls">
@@ -42,7 +42,7 @@ const createRatingTemplate = (movie) => {
         </div>
       </section>
     </div>`
-  );
+  ) : ``;
 };
 
 export default class MovieRating extends AbstractComponent {

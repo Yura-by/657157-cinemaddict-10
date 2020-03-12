@@ -75,7 +75,7 @@ const generateMovie = () => {
       description: getDescription(SENTENCES_DESCRIPTION)
     },
     userDetails: {
-      personalRating: getRandomNumber(1, 9),
+      personalRating: alreadyWatched ? getRandomNumber(1, 9) : 0,
       watchlist: Math.random() > 0.5,
       alreadyWatched,
       watchingDate: getDateWatching(alreadyWatched),

@@ -25,9 +25,9 @@ const createMovieTemplate = (movie) => {
       <p class="film-card__description">${description}</p>
       <a class="film-card__comments">${countComments}</a>
       <form class="film-card__controls">
-        <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${watchlist ? ACTIVE_CLASS : ``}">Add to watchlist</button>
-        <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${alreadyWatched ? ACTIVE_CLASS : ``}">Mark as watched</button>
-        <button class="film-card__controls-item button film-card__controls-item--favorite ${favorite ? ACTIVE_CLASS : ``}">Mark as favorite</button>
+        <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${watchlist ? ACTIVE_CLASS : ``}" type="button">Add to watchlist</button>
+        <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${alreadyWatched ? ACTIVE_CLASS : ``}" type="button">Mark as watched</button>
+        <button class="film-card__controls-item button film-card__controls-item--favorite ${favorite ? ACTIVE_CLASS : ``}" type="button">Mark as favorite</button>
       </form>
     </article>`
   );
@@ -56,5 +56,20 @@ export default class Movie extends AbstractComponent {
   setCommentHandler(handler) {
     const commentElement = this.getElement().querySelector(`.film-card__comments`);
     commentElement.addEventListener(`click`, handler);
+  }
+
+  setAddToWatchlistHandler(handler) {
+    const watchElement = this.getElement().querySelector(`.film-card__controls-item--add-to-watchlist`);
+    watchElement.addEventListener(`click`, handler);
+  }
+
+  setAsWatchedHandler(handler) {
+    const asWatchElement = this.getElement().querySelector(`.film-card__controls-item--mark-as-watched`);
+    asWatchElement.addEventListener(`click`, handler);
+  }
+
+  setFavoriteHandler(handler) {
+    const favoriteElement = this.getElement().querySelector(`.film-card__controls-item--favorite`);
+    favoriteElement.addEventListener(`click`, handler);
   }
 }
