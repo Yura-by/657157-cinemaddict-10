@@ -17,7 +17,7 @@ export default class FilterController {
   render() {
     const container = this._container;
     const allMovies = this._moviesModel.getAllMovies();
-    const filters = Filter.map((filterName) => {
+    const filters = Object.values(Filter).map((filterName) => {
       return {
         name: filterName,
         count: getMoviesByFilter(allMovies, filterName).length,
@@ -33,7 +33,7 @@ export default class FilterController {
     if (oldFilterComponent) {
       replace(this._filterComponent, oldFilterComponent);
     } else {
-      render(container, this._filterComponent, RenderPosition.BEFOREEND);
+      render(container, this._filterComponent, RenderPosition.AFTERBEGIN);
     }
   }
 
@@ -41,5 +41,4 @@ export default class FilterController {
     this._moviesModel.setFilter(filterType);
     this._activeFilterType = filterType;
   }
-
 }

@@ -39,6 +39,7 @@ export default class PageController {
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
+    this._onFilterChange = this._onFilterChange.bind(this);
 
     this._sortsComponent.setSortTypeChangeHandler(this._onSortTypeChange);
   }
@@ -67,6 +68,12 @@ export default class PageController {
     this._renderExtraRatingSection(filmsElement);
 
     this._renderExtraCommentsSection(filmsElement);
+  }
+
+  _onFilterChange() {
+    this._removeMovies();
+    this._renderMovies(this._moviesModel.getMovies().slice(0, SHOWING_MOVIES_ON_START));
+    thi.__renderLoadMoreButton();
   }
 
   _onViewChange() {

@@ -1,10 +1,17 @@
+import {getMoviesByFilter} from '../utils/filter.js';
+import {Filter} from '../const.js';
+
 export default class Movies {
   constructor() {
     this._movies = [];
+
+    this._activeFilter = Filter.ALL;
+
+    this._filterChangeHandler = [];
   }
 
   getMovies() {
-    return this._movies;
+    return getMoviesByFilter(this._movies, this._activeFilter);
   }
 
   getAllMovies() {
@@ -25,5 +32,14 @@ export default class Movies {
     this._movies = [].concat(this._movies.slice(0, index), newMovie, this._movies.slice(index + 1));
 
     return true;
+  }
+
+  setFilter(filterType) {
+    this._activeFilter = filterType;
+    this._filterChangeHandler.forEach((handler) => handler());
+  }
+
+  setFilterChangeHandler(handler) {
+    this._filterChangeHandler.push(handler);
   }
 }
