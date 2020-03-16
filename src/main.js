@@ -5,10 +5,15 @@ import {generateMovies} from './mock/movie.js';
 import {Filter, RenderPosition} from './const.js';
 import PageController from './controllers/page.js';
 import {render} from './utils/render.js';
+import MoviesModel from './models/movies.js';
 
 const COUNT_MOVIES = 18;
 
 const movies = generateMovies(COUNT_MOVIES);
+
+const moviesModel = new MoviesModel();
+
+moviesModel.setMovies(movies);
 
 const generateFilter = (allMovies, name) => {
   return {
@@ -52,6 +57,6 @@ render(mainElement, new FilterComponent(getFilters()), RenderPosition.AFTERBEGIN
 
 render(document.body, new FooterComponent(movies), RenderPosition.BEFOREEND);
 
-const pageController = new PageController(mainElement);
+const pageController = new PageController(mainElement, moviesModel);
 
-pageController.render(movies);
+pageController.render();

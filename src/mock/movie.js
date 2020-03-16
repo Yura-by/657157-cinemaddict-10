@@ -57,6 +57,7 @@ const getComments = () => {
 const generateMovie = () => {
   const alreadyWatched = Math.random() > 0.5;
   return {
+    id: new Date().getTime() + Math.random(),
     filmInfo: {
       title: getRandomElementFromArray(TITLES),
       alternativeTitle: getRandomElementFromArray(ALTERNATIVE_TITLES),
