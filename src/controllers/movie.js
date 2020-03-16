@@ -2,6 +2,7 @@ import MovieComponent from '../components/movie.js';
 import MovieInfoComponent from '../components/movie-info.js';
 import {render, replace} from '../utils/render.js';
 import {RenderPosition} from '../const.js';
+import MovieInfoContainerComponent from '../components/movie-info-contaiter';
 
 const Mode = {
   DEFAULT: `default`,
@@ -16,6 +17,7 @@ export default class MovieController {
 
     this._movieComponent = null;
     this._infoComponent = null;
+    this._infoContainerComponent = new MovieInfoContainerComponent();
 
     this._mode = Mode.DEFAULT;
 
@@ -109,14 +111,15 @@ export default class MovieController {
 
   _showInfoElement() {
     this._onViewChange();
-    render(document.body, this._infoComponent, RenderPosition.BEFOREEND);
+    render(document.body, this._infoContainerComponent, RenderPosition.BEFOREEND);
+    render(this._infoContainerComponent.getElement(), this._infoComponent, RenderPosition.BEFOREEND);
     document.addEventListener(`keydown`, this._onEscKeyDown);
     this._mode = Mode.EDIT;
   }
 
   _hideInfoElement() {
     this._infoComponent.reset();
-    this._infoComponent.getElement().remove();
+    this._infoContainerComponent.getElement().remove();
     document.removeEventListener(`keydown`, this._onEscKeyDown);
     this._mode = Mode.DEFAULT;
   }

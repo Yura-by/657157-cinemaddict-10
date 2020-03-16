@@ -8,13 +8,11 @@ const createMovieInfoTemplane = (description, rating, comments) => {
   const ratingTemplate = rating.getTemplate();
   const commentsTemplate = comments.getTemplate();
   return (
-    `<section class="film-details">
-      <form class="film-details__inner" action="" method="get">
-        ${descriptionTemplate}
-        ${ratingTemplate}
-        ${commentsTemplate}
-      </form>
-    </section>`
+    `<form class="film-details__inner" action="" method="get">
+      ${descriptionTemplate}
+      ${ratingTemplate}
+      ${commentsTemplate}
+    </form>`
   );
 };
 
@@ -153,6 +151,6 @@ export default class MovieInfo extends AbstractSmartComponent {
   }
 
   reset() {
-    this.getElement().querySelector(`.film-details__inner`).reset();
+    this.getElement().reset();
   }
 }
