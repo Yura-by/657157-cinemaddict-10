@@ -7,7 +7,7 @@ export default class Movies {
 
     this._activeFilter = Filter.ALL;
 
-    this._filterChangeHandler = [];
+    this._filterChangeHandlers = [];
   }
 
   getMovies() {
@@ -36,10 +36,10 @@ export default class Movies {
 
   setFilter(filterType) {
     this._activeFilter = filterType;
-    this._filterChangeHandler.forEach((handler) => handler());
+    this._filterChangeHandlers.forEach((handler) => handler());
   }
 
   setFilterChangeHandler(handler) {
-    this._filterChangeHandler.push(handler);
+    this._filterChangeHandlers.push(handler);
   }
 }

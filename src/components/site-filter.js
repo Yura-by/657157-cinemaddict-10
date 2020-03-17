@@ -1,11 +1,13 @@
 import AbstractComponent from './abstract-component.js';
 import {Filter} from '../const.js';
 
+const ACTIVE_CLASS = `main-navigation__item--active`;
+
 const getLinksMarkup = (filters) => {
   return filters.map((it) => {
     const {name, count, checked} = it;
-    const countMarkup = count ? `<span class="main-navigation__item-count">${count}</span>` : ``;
-    const activeClass = it === checked ? `main-navigation__item--active` : ``;
+    const countMarkup = count && name !== Filter.ALL ? `<span class="main-navigation__item-count">${count}</span>` : ``;
+    const activeClass = name === checked ? ACTIVE_CLASS : ``;
     return (
       `<a href="#" class="main-navigation__item ${activeClass}" data-filter-name="${name}">${name} ${countMarkup}</a>`
     );
@@ -40,8 +42,9 @@ export default class Extra extends AbstractComponent {
       if (evt.target.tagName !== `A` || evt.target.classList.contains(`main-navigation__item--additional`)) {
         return;
       }
-      handler(evt.target.dataset);
-      console.log(evt.target.dataset.filterName)
+      this.getElement().querySelector(`.${ACTIVE_CLASS}`).classList.remove(ACTIVE_CLASS);
+      evt.target.classList.add(ACTIVE_CLASS);
+      handler(evt.target.dataset.filterName);
     });
   }
 }

@@ -12,6 +12,6 @@ const getMoviesByFilter = (movies, filterName) => {
       return movies.filter((movie) => movie.userDetails.favorite);
   }
   return movies;
-}
+};
 
 export {getMoviesByFilter};
