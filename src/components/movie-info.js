@@ -58,14 +58,14 @@ export default class MovieInfo extends AbstractSmartComponent {
   }
 
   _subscribeOnEvents() {
-    const asWatchElement = this.getElement().querySelector(`input[name="watched"]`);
-    asWatchElement.addEventListener(`click`, () => {
-      this._alreadyWatched = !this._alreadyWatched;
-      if (!this._alreadyWatched) {
-        this._personalRating = 0;
-      }
-      this.rerender();
-    });
+    // const asWatchElement = this.getElement().querySelector(`input[name="watched"]`);
+    // asWatchElement.addEventListener(`click`, () => {
+    //   this._alreadyWatched = !this._alreadyWatched;
+    //   if (!this._alreadyWatched) {
+    //     this._personalRating = 0;
+    //   }
+    //   this.rerender();
+    // });
 
     const emojiContainerElement = this.getElement().querySelector(`.film-details__emoji-list`);
     emojiContainerElement.addEventListener(`click`, (evt) => {
@@ -94,10 +94,10 @@ export default class MovieInfo extends AbstractSmartComponent {
     this._onAddToWatchlistClick = handler;
   }
 
-  // setAsWatchedHandler(handler) {
-  //   const asWatchElement = this.getElement().querySelector(`input[name="watched"]`);
-  //   asWatchElement.addEventListener(`click`, handler);
-  // }
+  setAsWatchedHandler(handler) {
+    const asWatchElement = this.getElement().querySelector(`input[name="watched"]`);
+    asWatchElement.addEventListener(`click`, handler);
+  }
 
   setFavoriteHandler(handler) {
     const favoriteElement = this.getElement().querySelector(`input[name="favorite"]`);

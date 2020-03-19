@@ -38,54 +38,54 @@ export default class MovieController {
     this._movieComponent.setCommentHandler(this._showInfoElement);
 
     this._movieComponent.setAddToWatchlistHandler(() => {
-      const newMovieDetails = Object.assign({}, movie.userDetails);
-      newMovieDetails.watchlist = !movie.userDetails.watchlist;
-      this._onDataChange(this, movie, Object.assign({}, movie, {userDetails: newMovieDetails}));
+      const newMovieUserDetails = Object.assign({}, movie.userDetails);
+      newMovieUserDetails.watchlist = !movie.userDetails.watchlist;
+      this._onDataChange(this, movie, Object.assign({}, movie, {userDetails: newMovieUserDetails}));
     });
 
     this._movieComponent.setAsWatchedHandler(() => {
-      const newMovieDetails = Object.assign({}, movie.userDetails);
-      newMovieDetails.alreadyWatched = !movie.userDetails.alreadyWatched;
-      this._onDataChange(this, movie, Object.assign({}, movie, {userDetails: newMovieDetails}));
+      const newMovieUserDetails = Object.assign({}, movie.userDetails);
+      newMovieUserDetails.alreadyWatched = !movie.userDetails.alreadyWatched;
+      this._onDataChange(this, movie, Object.assign({}, movie, {userDetails: newMovieUserDetails}));
     });
 
     this._movieComponent.setFavoriteHandler(() => {
-      const newMovieDetails = Object.assign({}, movie.userDetails);
-      newMovieDetails.favorite = !movie.userDetails.favorite;
-      this._onDataChange(this, movie, Object.assign({}, movie, {userDetails: newMovieDetails}));
+      const newMovieUserDetails = Object.assign({}, movie.userDetails);
+      newMovieUserDetails.favorite = !movie.userDetails.favorite;
+      this._onDataChange(this, movie, Object.assign({}, movie, {userDetails: newMovieUserDetails}));
     });
 
     this._infoComponent.setAddToWatchlistHandler(() => {
-      const newMovieDetails = Object.assign({}, movie.userDetails);
-      newMovieDetails.watchlist = !movie.userDetails.watchlist;
-      this._onDataChange(this, movie, Object.assign({}, movie, {userDetails: newMovieDetails}));
+      const newMovieUserDetails = Object.assign({}, movie.userDetails);
+      newMovieUserDetails.watchlist = !movie.userDetails.watchlist;
+      this._onDataChange(this, movie, Object.assign({}, movie, {userDetails: newMovieUserDetails}));
     });
 
-    // this._infoComponent.setAsWatchedHandler(() => {
-    //   const newMovieDetails = Object.assign({}, movie.userDetails);
-    //   newMovieDetails.alreadyWatched = !movie.userDetails.alreadyWatched;
-    //   if (!newMovieDetails.alreadyWatched) {
-    //     newMovieDetails.personalRating = 0;
-    //   }
-    //   this._onDataChange(this, movie, Object.assign({}, movie, {userDetails: newMovieDetails}));
-    // });
+    this._infoComponent.setAsWatchedHandler(() => {
+      const newMovieUserDetails = Object.assign({}, movie.userDetails);
+      newMovieUserDetails.alreadyWatched = !movie.userDetails.alreadyWatched;
+      if (!newMovieUserDetails.alreadyWatched) {
+        newMovieUserDetails.personalRating = 0;
+      }
+      this._onDataChange(this, movie, Object.assign({}, movie, {userDetails: newMovieUserDetails}));
+    });
 
     this._infoComponent.setFavoriteHandler(() => {
-      const newMovieDetails = Object.assign({}, movie.userDetails);
-      newMovieDetails.favorite = !movie.userDetails.favorite;
-      this._onDataChange(this, movie, Object.assign({}, movie, {userDetails: newMovieDetails}));
+      const newMovieUserDetails = Object.assign({}, movie.userDetails);
+      newMovieUserDetails.favorite = !movie.userDetails.favorite;
+      this._onDataChange(this, movie, Object.assign({}, movie, {userDetails: newMovieUserDetails}));
     });
 
     this._infoComponent.setUndoHandler(() => {
-      const newMovieDetails = Object.assign({}, movie.userDetails);
-      newMovieDetails.personalRating = 0;
-      this._onDataChange(this, movie, Object.assign({}, movie, {userDetails: newMovieDetails}));
+      const newMovieUserDetails = Object.assign({}, movie.userDetails);
+      newMovieUserDetails.personalRating = 0;
+      this._onDataChange(this, movie, Object.assign({}, movie, {userDetails: newMovieUserDetails}));
     });
 
     this._infoComponent.setRatingHandler((rating) => {
-      const newMovieDetails = Object.assign({}, movie.userDetails);
-      newMovieDetails.personalRating = rating;
-      this._onDataChange(this, movie, Object.assign({}, movie, {userDetails: newMovieDetails}));
+      const newMovieUserDetails = Object.assign({}, movie.userDetails);
+      newMovieUserDetails.personalRating = rating;
+      this._onDataChange(this, movie, Object.assign({}, movie, {userDetails: newMovieUserDetails}));
     });
 
     this._infoComponent.setSubmitCommentHandler((commentContent) => {

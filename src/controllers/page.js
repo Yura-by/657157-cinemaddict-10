@@ -65,11 +65,9 @@ export default class PageController {
 
     this._renderLoadMoreButton(movies.length);
 
-    const filmsElement = document.querySelector(`.films`);
+    this._renderExtraRatingSection();
 
-    this._renderExtraRatingSection(filmsElement);
-
-    this._renderExtraCommentsSection(filmsElement);
+    this._renderExtraCommentsSection();
   }
 
   _onFilterChange() {
@@ -159,25 +157,27 @@ export default class PageController {
     }
   }
 
-  _renderExtraRatingSection(container) {
+  _renderExtraRatingSection() {
+    const filmsElement = document.querySelector(`.films`);
     const extraRatingMovies = getRatingMovies(this._moviesModel.getAllMovies());
     const extraRatingComponent = new ExtraRatingComponent(extraRatingMovies);
     const extraRatingMoviesContainer = extraRatingComponent.getElement().querySelector(`.films-list__container`);
     if (extraRatingMoviesContainer) {
       this._extraRatingControllers = renderMovies(extraRatingMoviesContainer, extraRatingMovies, this._onDataChange, this._onViewChange);
 
-      render(container, extraRatingComponent, RenderPosition.BEFOREEND);
+      render(filmsElement, extraRatingComponent, RenderPosition.BEFOREEND);
     }
   }
 
-  _renderExtraCommentsSection(container) {
+  _renderExtraCommentsSection() {
+    const filmsElement = document.querySelector(`.films`);
     const extraCommentsMovies = getCommentsMovies(this._moviesModel.getAllMovies());
     const extraCommentsComponent = new ExtraCommentsComponent(extraCommentsMovies);
     const extraCommentsMoviesContainer = extraCommentsComponent.getElement().querySelector(`.films-list__container`);
     if (extraCommentsMoviesContainer) {
       this._extraCommentControllers = renderMovies(extraCommentsMoviesContainer, extraCommentsMovies, this._onDataChange, this._onViewChange);
 
-      render(container, extraCommentsComponent, RenderPosition.BEFOREEND);
+      render(filmsElement, extraCommentsComponent, RenderPosition.BEFOREEND);
     }
   }
 }

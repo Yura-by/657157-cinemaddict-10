@@ -7,7 +7,7 @@ import {render} from './utils/render.js';
 import MoviesModel from './models/movies.js';
 import FilterController from './controllers/filter.js';
 
-const COUNT_MOVIES = 17;
+const COUNT_MOVIES = 8;
 
 const movies = generateMovies(COUNT_MOVIES);
 
