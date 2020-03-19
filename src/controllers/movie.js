@@ -21,12 +21,15 @@ export default class MovieController {
 
     this._mode = Mode.DEFAULT;
 
+    this._id = null;
+
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
     this._showInfoElement = this._showInfoElement.bind(this);
     this._hideInfoElement = this._hideInfoElement.bind(this);
   }
 
   render(movie) {
+    this._id = movie.id;
     const oldMovieComponent = this._movieComponent;
     const oldInfoComponent = this._infoComponent;
 

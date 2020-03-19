@@ -153,7 +153,22 @@ export default class PageController {
     const isSuccess = this._moviesModel.updateMovie(oldData.id, newData);
 
     if (isSuccess) {
-      movieController.render(newData);
+      this._rerenderMovieController(movieController, newData);
+    }
+  }
+
+  _rerenderMovieController(movieController, newData) {
+    const ordinaryMovieController = this._showedMovieControllers.find((showedMovieController) => showedMovieController._id === movieController._id);
+    if (ordinaryMovieController) {
+      ordinaryMovieController.render(newData);
+    }
+    const extraRatingController = this._extraRatingControllers.find((movieExtraController) => movieExtraController._id === movieController._id);
+    if (extraRatingController) {
+      extraRatingController.render(newData);
+    }
+    const extraCommentsController = this._extraCommentControllers.find((movieExtraController) => movieExtraController._id === movieController._id);
+    if (extraCommentsController) {
+      extraCommentsController.render(newData);
     }
   }
 
