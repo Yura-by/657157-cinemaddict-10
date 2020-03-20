@@ -36,11 +36,12 @@ const getCommentsMarkup = (comments) => {
   }).join(`\n`);
 };
 
-const createCommentsTemplane = (movie, urlEmoji) => {
+const createCommentsTemplane = (movie, urlEmoji, commentText) => {
   const {comments} = movie;
   const countComments = comments.length;
   const commentsMarkup = getCommentsMarkup(comments);
   const imageMarkup = urlEmoji ? `<image class="film-details__add-emoji-image" src="${urlEmoji}" width="100%" height="100%" alt="Emotion">` : ``;
+  const commentValue = commentText ? commentText : ``;
   return (
     `<div class="form-details__bottom-container">
       <section class="film-details__comments-wrap">
@@ -54,7 +55,7 @@ const createCommentsTemplane = (movie, urlEmoji) => {
           <div for="add-emoji" class="film-details__add-emoji-label">${imageMarkup}</div>
 
           <label class="film-details__comment-label">
-            <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
+          <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${commentValue}</textarea>
           </label>
 
           <div class="film-details__emoji-list">
@@ -85,13 +86,14 @@ const createCommentsTemplane = (movie, urlEmoji) => {
 };
 
 export default class MovieComments extends AbstractComponent {
-  constructor(movie, urlEmoji) {
+  constructor(movie, urlEmoji, commentText) {
     super();
     this._movie = movie;
     this._urlEmoji = urlEmoji;
+    this._commentText = commentText;
   }
 
   getTemplate() {
-    return createCommentsTemplane(this._movie, this._urlEmoji);
+    return createCommentsTemplane(this._movie, this._urlEmoji, this._commentText);
   }
 }

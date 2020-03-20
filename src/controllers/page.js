@@ -4,7 +4,7 @@ import MovieContainerComponent from '../components/movies-container.js';
 import ShowMoreComponent from '../components/show-more.js';
 import ExtraRatingComponent from '../components/extra-rating.js';
 import ExtraCommentsComponent from '../components/extra-comments.js';
-import MovieController from './movie.js';
+import MovieController, {Type} from './movie.js';
 import {render, remove} from '../utils/render.js';
 import {getRatingMovies, getCommentsMovies} from '../utils/extra.js';
 import {Sort, RenderPosition, SHOWING_MOVIES_ON_START} from '../const.js';
@@ -35,6 +35,8 @@ export default class PageController {
     this._sortsComponent = new SortComponent(getSorts());
     this._movieContainerComponent = new MovieContainerComponent();
     this._loadMoreButtomComponent = null;
+    this._extraRatingComponent = null;
+    this._extraCommentsComponent = null;
 
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
@@ -158,41 +160,57 @@ export default class PageController {
   }
 
   _rerenderMovieController(movieController, newData) {
-    const ordinaryMovieController = this._showedMovieControllers.find((showedMovieController) => showedMovieController._id === movieController._id);
-    if (ordinaryMovieController) {
-      ordinaryMovieController.render(newData);
+    if (movieController.type === Type.USUAL) {
+      movieController.render(newData);
+      this._removeExtraComponetns();
+      this._renderExtraRatingSection();
+      this._renderExtraCommentsSection();
+
     }
-    const extraRatingController = this._extraRatingControllers.find((movieExtraController) => movieExtraController._id === movieController._id);
-    if (extraRatingController) {
-      extraRatingController.render(newData);
-    }
-    const extraCommentsController = this._extraCommentControllers.find((movieExtraController) => movieExtraController._id === movieController._id);
-    if (extraCommentsController) {
-      extraCommentsController.render(newData);
-    }
+    // const ordinaryMovieController = this._showedMovieControllers.find((showedMovieController) => showedMovieController._id === movieController._id);
+    // if (ordinaryMovieController) {
+    //   ordinaryMovieController.render(newData);
+    // }
+    // const extraRatingController = this._extraRatingControllers.find((movieExtraController) => movieExtraController._id === movieController._id);
+    // if (extraRatingController) {
+    //   extraRatingController.render(newData);
+    // }
+    // const extraCommentsController = this._extraCommentControllers.find((movieExtraController) => movieExtraController._id === movieController._id);
+    // if (extraCommentsController) {
+    //   extraCommentsController.render(newData);
+    // }
+  }
+
+  _removeExtraComponetns() {
+    remove(this._extraRatingComponent);
+    remove(this._extraCommentsComponent);
   }
 
   _renderExtraRatingSection() {
     const filmsElement = document.querySelector(`.films`);
     const extraRatingMovies = getRatingMovies(this._moviesModel.getAllMovies());
-    const extraRatingComponent = new ExtraRatingComponent(extraRatingMovies);
-    const extraRatingMoviesContainer = extraRatingComponent.getElement().querySelector(`.films-list__container`);
-    if (extraRatingMoviesContainer) {
+    this._extraRatingComponent = new ExtraRatingComponent(extraRatingMovies);
+    if (this._extraRatingComponent.getElement()) {
+      const extraRatingMoviesContainer = this._extraRatingComponent.getElement().querySelector(`.films-list__container`);
       this._extraRatingControllers = renderMovies(extraRatingMoviesContainer, extraRatingMovies, this._onDataChange, this._onViewChange);
-
-      render(filmsElement, extraRatingComponent, RenderPosition.BEFOREEND);
+      this._extraRatingControllers.forEach((controller) => {
+        controller.type = Type.EXTRA;
+      });
+      render(filmsElement, this._extraRatingComponent, RenderPosition.BEFOREEND);
     }
   }
 
   _renderExtraCommentsSection() {
     const filmsElement = document.querySelector(`.films`);
     const extraCommentsMovies = getCommentsMovies(this._moviesModel.getAllMovies());
-    const extraCommentsComponent = new ExtraCommentsComponent(extraCommentsMovies);
-    const extraCommentsMoviesContainer = extraCommentsComponent.getElement().querySelector(`.films-list__container`);
-    if (extraCommentsMoviesContainer) {
+    this._extraCommentsComponent = new ExtraCommentsComponent(extraCommentsMovies);
+    if (this._extraCommentsComponent.getElement()) {
+      const extraCommentsMoviesContainer = this._extraCommentsComponent.getElement().querySelector(`.films-list__container`);
       this._extraCommentControllers = renderMovies(extraCommentsMoviesContainer, extraCommentsMovies, this._onDataChange, this._onViewChange);
-
-      render(filmsElement, extraCommentsComponent, RenderPosition.BEFOREEND);
+      this._extraCommentControllers.forEach((controller) => {
+        controller.type = Type.EXTRA;
+      });
+      render(filmsElement, this._extraCommentsComponent, RenderPosition.BEFOREEND);
     }
   }
 }

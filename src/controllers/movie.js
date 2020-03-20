@@ -9,6 +9,11 @@ const Mode = {
   EDIT: `edit`
 };
 
+const Type = {
+  USUAL: `usual`,
+  EXTRA: `extra`
+};
+
 export default class MovieController {
   constructor(container, onDataChange, onViewChange) {
     this._container = container;
@@ -20,6 +25,7 @@ export default class MovieController {
     this._infoContainerComponent = new MovieInfoContainerComponent();
 
     this._mode = Mode.DEFAULT;
+    this.type = Type.USUAL;
 
     this._id = null;
 
@@ -80,6 +86,9 @@ export default class MovieController {
     });
 
     this._infoComponent.setUndoHandler(() => {
+      if (movie.userDetails.personalRating === 0) {
+        return;
+      }
       const newMovieUserDetails = Object.assign({}, movie.userDetails);
       newMovieUserDetails.personalRating = 0;
       this._onDataChange(this, movie, Object.assign({}, movie, {userDetails: newMovieUserDetails}));
@@ -91,9 +100,9 @@ export default class MovieController {
       this._onDataChange(this, movie, Object.assign({}, movie, {userDetails: newMovieUserDetails}));
     });
 
-    this._infoComponent.setSubmitCommentHandler((commentContent) => {
-      console.log(commentContent);
-      this._infoComponent.resetEmojiImage();
+    this._infoComponent.setSubmitCommentHandler((commentContent, reaction) => {
+      console.log(commentContent, reaction);
+      this._infoComponent.resetElement();
     });
 
     this._infoComponent.setCloseButtonHandler(this._hideInfoElement);
@@ -121,7 +130,7 @@ export default class MovieController {
   }
 
   _hideInfoElement() {
-    this._infoComponent.reset();
+    this._infoComponent.resetElement();
     this._infoContainerComponent.getElement().remove();
     document.removeEventListener(`keydown`, this._onEscKeyDown);
     this._mode = Mode.DEFAULT;
@@ -133,3 +142,5 @@ export default class MovieController {
     }
   }
 }
+
+export {Type};

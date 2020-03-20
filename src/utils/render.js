@@ -19,7 +19,9 @@ const render = (container, component, place) => {
 };
 
 const remove = (component) => {
-  component.getElement().remove();
+  if (component.getElement()) {
+    component.getElement().remove();
+  }
   component.removeElement();
 };
 

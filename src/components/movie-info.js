@@ -27,6 +27,7 @@ export default class MovieInfo extends AbstractSmartComponent {
     this._alreadyWatched = movie.userDetails.alreadyWatched;
     this._personalRating = movie.userDetails.personalRating;
     this._urlEmoji = ``;
+    this._commentText = ``;
 
     this._onCloseButtonClick = null;
     this._onAddToWatchlistClick = null;
@@ -42,7 +43,7 @@ export default class MovieInfo extends AbstractSmartComponent {
   getTemplate() {
     this._descriptionComponent = new MovieDescriptionComponent(this._movie, this._alreadyWatched, this._personalRating);
     this._ratingComponent = new MovieRatingComponent(this._movie, this._alreadyWatched, this._personalRating);
-    this._commentsComponent = new MovieCommentsComponent(this._movie, this._urlEmoji);
+    this._commentsComponent = new MovieCommentsComponent(this._movie, this._urlEmoji, this._commentText);
     return createMovieInfoTemplane(this._descriptionComponent, this._ratingComponent, this._commentsComponent);
   }
 
@@ -75,10 +76,8 @@ export default class MovieInfo extends AbstractSmartComponent {
       const urlName = evt.target.src;
       this._commentReaction = evt.target.dataset.reaction;
       this._urlEmoji = urlName;
+      this._commentText = this.getElement().querySelector(`.film-details__comment-input`).value;
       this.rerender();
-      // const targetElement = this.getElement().querySelector(`.film-details__add-emoji-label`);
-      // targetElement.style.backgroundImage = `url(${urlName})`;
-      // targetElement.style.backgroundSize = `100%`;
     });
   }
 
@@ -126,31 +125,27 @@ export default class MovieInfo extends AbstractSmartComponent {
     this._onRatingClick = handler;
   }
 
-  resetEmojiImage() {
-    const targetElement = this.getElement().querySelector(`.film-details__add-emoji-label`);
-    targetElement.style.backgroundImage = ``;
+  resetElement() {
+    this.getElement().reset();
+    this._commentReaction = ``;
+    this._urlEmoji = ``;
+    this._commentText = ``;
     const inputsCollection = this.getElement().querySelectorAll(`.film-details__emoji-item`);
     inputsCollection.forEach((it) => {
       it.checked = false;
     });
-    const imageEmojiElement = this.getElement().querySelector(`.film-details__add-emoji-image`);
-    if (imageEmojiElement) {
-      imageEmojiElement.remove();
-    }
+
+    this.rerender();
   }
 
   setSubmitCommentHandler(handler) {
     const commentElement = this.getElement().querySelector(`.film-details__comment-input`);
     commentElement.addEventListener(`keydown`, (evt) => {
       if (evt.key === `Enter` && evt.ctrlKey && commentElement.value) {
-        handler(commentElement.value);
-        commentElement.value = ``;
+        handler(commentElement.value, this._commentReaction);
+        this.resetElement();
       }
     });
     this._onCommentSubmit = handler;
-  }
-
-  reset() {
-    this.getElement().reset();
   }
 }
