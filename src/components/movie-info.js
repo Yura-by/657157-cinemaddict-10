@@ -29,7 +29,7 @@ export default class MovieInfo extends AbstractSmartComponent {
     this._urlEmoji = ``;
     this._commentText = ``;
 
-    this._onCloseButtonClick = null;
+    this._onCloseButtonClickHandlers = [];
     this._onAddToWatchlistClick = null;
     this._onFavoriteClick = null;
     this._onUndoClick = null;
@@ -50,7 +50,7 @@ export default class MovieInfo extends AbstractSmartComponent {
   recoveryListeners() {
     this._subscribeOnEvents();
 
-    this.setCloseButtonHandler(this._onCloseButtonClick);
+    this._onCloseButtonClickHandlers.forEach((handler) => this.setCloseButtonHandler(handler));
     this.setAddToWatchlistHandler(this._onAddToWatchlistClick);
     this.setFavoriteHandler(this._onFavoriteClick);
     this.setUndoHandler(this._onUndoClick);
@@ -59,15 +59,6 @@ export default class MovieInfo extends AbstractSmartComponent {
   }
 
   _subscribeOnEvents() {
-    // const asWatchElement = this.getElement().querySelector(`input[name="watched"]`);
-    // asWatchElement.addEventListener(`click`, () => {
-    //   this._alreadyWatched = !this._alreadyWatched;
-    //   if (!this._alreadyWatched) {
-    //     this._personalRating = 0;
-    //   }
-    //   this.rerender();
-    // });
-
     const emojiContainerElement = this.getElement().querySelector(`.film-details__emoji-list`);
     emojiContainerElement.addEventListener(`click`, (evt) => {
       if (evt.target.tagName !== `IMG`) {
@@ -82,9 +73,11 @@ export default class MovieInfo extends AbstractSmartComponent {
   }
 
   setCloseButtonHandler(handler) {
+    this._onCloseButtonClickHandlers.push(handler);
     const closeButtonElement = this.getElement().querySelector(`.film-details__close-btn`);
-    closeButtonElement.addEventListener(`click`, handler);
-    this._onCloseButtonClick = handler;
+    closeButtonElement.addEventListener(`click`, () => {
+      this._onCloseButtonClickHandlers.forEach((it) => it());
+    });
   }
 
   setAddToWatchlistHandler(handler) {

@@ -24,10 +24,11 @@ export default class MovieController {
     this._infoComponent = null;
     this._infoContainerComponent = new MovieInfoContainerComponent();
 
-    this._mode = Mode.DEFAULT;
+    this.mode = Mode.DEFAULT;
     this.type = Type.USUAL;
 
     this._id = null;
+    this._movieComments = null;
 
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
     this._showInfoElement = this._showInfoElement.bind(this);
@@ -115,8 +116,21 @@ export default class MovieController {
     }
   }
 
+  setCloseHandler(handler) {
+    this._infoComponent.setCloseButtonHandler(handler);
+
+    const onEscClick = (evt) => {
+      if (evt.key === `Escape` || evt.key === `Esc`) {
+
+        handler();
+        document.removeEventListener(`keydown`, onEscClick);
+      }
+    };
+    document.addEventListener(`keydown`, onEscClick);
+  }
+
   setDefaultView() {
-    if (this._mode !== Mode.DEFAULT) {
+    if (this.mode !== Mode.DEFAULT) {
       this._hideInfoElement();
     }
   }
@@ -126,14 +140,14 @@ export default class MovieController {
     render(document.body, this._infoContainerComponent, RenderPosition.BEFOREEND);
     render(this._infoContainerComponent.getElement(), this._infoComponent, RenderPosition.BEFOREEND);
     document.addEventListener(`keydown`, this._onEscKeyDown);
-    this._mode = Mode.EDIT;
+    this.mode = Mode.EDIT;
   }
 
   _hideInfoElement() {
     this._infoComponent.resetElement();
     this._infoContainerComponent.getElement().remove();
     document.removeEventListener(`keydown`, this._onEscKeyDown);
-    this._mode = Mode.DEFAULT;
+    this.mode = Mode.DEFAULT;
   }
 
   _onEscKeyDown(evt) {
@@ -143,4 +157,4 @@ export default class MovieController {
   }
 }
 
-export {Type};
+export {Type, Mode};

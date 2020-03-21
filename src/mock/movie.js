@@ -46,12 +46,24 @@ const createComment = (id) => {
   };
 };
 
-const getComments = () => {
-  const randomNumber = getRandomNumber(0, 100);
-  return new Array(getRandomNumber(0, 6)).fill(``)
-    .map((it, index) => {
-      return createComment(randomNumber + index);
+const getComments = (id, commentIds) => {
+  return commentIds.map((commentId) => {
+      return createComment(commentId);
     });
+};
+
+let count = 0;
+const maxCommentNumber = 200;
+
+const createArrayComments = () => {
+  const result = [];
+  for(let i = count + 1; i < maxCommentNumber; i++) {
+    result.push(i);
+    count = i;
+    if(result.length >= getRandomNumber(2, 6)) {
+      return result;
+    }
+  }
 };
 
 const generateMovie = () => {
@@ -82,7 +94,7 @@ const generateMovie = () => {
       watchingDate: getDateWatching(alreadyWatched),
       favorite: Math.random() > 0.5
     },
-    comments: getComments()
+    comments: createArrayComments()
   };
 };
 
@@ -91,4 +103,4 @@ const generateMovies = (count) => {
     .map(() => generateMovie());
 };
 
-export {generateMovie, generateMovies, getRandomNumber, getRandomElementFromArray, DIRECTORS, getDescription, SENTENCES_DESCRIPTION, getDateWatching};
+export {generateMovie, generateMovies, getRandomNumber, getRandomElementFromArray, DIRECTORS, getDescription, SENTENCES_DESCRIPTION, getDateWatching, getComments};
