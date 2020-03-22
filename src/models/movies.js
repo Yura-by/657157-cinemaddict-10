@@ -24,7 +24,7 @@ export default class Movies {
   }
 
   getMovie(idMovie) {
-    this.getAllMovies().find((it) => it.id === idMovie);
+    return this.getAllMovies().find((it) => it.id === idMovie);
   }
 
   _addComments(movies) {
@@ -84,18 +84,15 @@ export default class Movies {
 
   removeComment(movieId, idComment) {
     const targetMovie = this._movies.find((movie) => movie.id === movieId);
-    const index = targetMovie.comments.findIndex((comment, indexNumber, array) => {
-      console.log(comment)
-      console.log(idComment)
-      console.log(indexNumber)
-      console.log(array)
+    const index = targetMovie.comments.findIndex((comment) => {
+      console.log(typeof comment)
+      console.log(typeof idComment)
       return comment === idComment;
     });
-    console.log(index)
     if (index === -1) {
       return false;
     }
-    targetMovie.comments = [].concat(targetMovie.comments(0, index), targetMovie.comments(index + 1));
+    targetMovie.comments = [].concat(targetMovie.comments.slice(0, index), targetMovie.comments.slice(index + 1));
     return this._deleteComment(idComment);
   }
 
