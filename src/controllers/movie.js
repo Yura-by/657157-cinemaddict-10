@@ -108,6 +108,10 @@ export default class MovieController {
 
     this._infoComponent.setCloseButtonHandler(this._hideInfoElement);
 
+    this._infoComponent.setDeleteCommentButtonHandler((idComment) => {
+      this._onDataChange(this, movie, null, idComment);
+    });
+
     if (oldMovieComponent && oldInfoComponent) {
       replace(this._movieComponent, oldMovieComponent);
       replace(this._infoComponent, oldInfoComponent);

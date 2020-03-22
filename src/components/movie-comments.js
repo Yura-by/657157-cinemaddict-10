@@ -16,7 +16,7 @@ import {getCommentDate} from '../utils/common.js';
 
 const getCommentsMarkup = (comments) => {
   return comments.map((commentItem) => {
-    const {emotion, comment, author, date} = commentItem;
+    const {id, emotion, comment, author, date} = commentItem;
     const coutnDays = getCommentDate(date);
     return (
       `<li class="film-details__comment">
@@ -28,7 +28,7 @@ const getCommentsMarkup = (comments) => {
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${author}</span>
             <span class="film-details__comment-day">${coutnDays}</span>
-            <button class="film-details__comment-delete">Delete</button>
+            <button class="film-details__comment-delete" data-comment-id="${id}">Delete</button>
           </p>
         </div>
       </li>`

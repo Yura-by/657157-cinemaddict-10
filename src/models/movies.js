@@ -23,6 +23,10 @@ export default class Movies {
     return res;
   }
 
+  getMovie(idMovie) {
+    this.getAllMovies().find((it) => it.id === idMovie);
+  }
+
   _addComments(movies) {
     // if (!movies instanceof Array) {
     //   const entireComments = movies.comments.map((idComment) => {
@@ -78,11 +82,29 @@ export default class Movies {
     return this._commentsModel.getComment(id);
   }
 
-  removeComment(id) {
+  removeComment(movieId, idComment) {
+    const targetMovie = this._movies.find((movie) => movie.id === movieId);
+    const index = targetMovie.comments.findIndex((comment, indexNumber, array) => {
+      console.log(comment)
+      console.log(idComment)
+      console.log(indexNumber)
+      console.log(array)
+      return comment === idComment;
+    });
+    console.log(index)
+    if (index === -1) {
+      return false;
+    }
+    targetMovie.comments = [].concat(targetMovie.comments(0, index), targetMovie.comments(index + 1));
+    return this._deleteComment(idComment);
+  }
+
+  _deleteComment(id) {
     return this._commentsModel.removeComment(id);
   }
 
   clearComments() {
     this._commentsModel.clearComments();
   }
+
 }

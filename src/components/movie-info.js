@@ -36,6 +36,7 @@ export default class MovieInfo extends AbstractSmartComponent {
     this._onRatingClick = null;
     this._onEmojiClick = null;
     this._onCommentSubmit = null;
+    this._onDeleteButtonClick = null;
 
     this._subscribeOnEvents();
   }
@@ -56,6 +57,7 @@ export default class MovieInfo extends AbstractSmartComponent {
     this.setUndoHandler(this._onUndoClick);
     this.setRatingHandler(this._onRatingClick);
     this.setSubmitCommentHandler(this._onCommentSubmit);
+    this.setDeleteCommentButtonHandler(this._onDeleteButtonClick);
   }
 
   _subscribeOnEvents() {
@@ -140,5 +142,17 @@ export default class MovieInfo extends AbstractSmartComponent {
       }
     });
     this._onCommentSubmit = handler;
+  }
+
+  setDeleteCommentButtonHandler(handler) {
+    const listCommentsElement = this.getElement().querySelector(`.film-details__comments-list`);
+    listCommentsElement.addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      if (evt.target.tagName !== `BUTTON`) {
+        return;
+      }
+      handler(evt.target.dataset.commentId);
+    })
+    this._onDeleteButtonClick = handler;
   }
 }

@@ -146,7 +146,14 @@ export default class PageController {
     }
   }
 
-  _onDataChange(movieController, oldData, newData) {
+  _onDataChange(movieController, oldData, newData, idComment) {
+    if (newData === null) {
+      const isSuccess = this._moviesModel.removeComment(oldData.id, idComment);
+      if (isSuccess) {
+        this._rerenderMovieController(movieController, this._moviesModel.getMovie(oldData.id));
+      }
+      return;
+    }
     const isSuccess = this._moviesModel.updateMovie(oldData.id, newData);
 
     if (isSuccess) {
