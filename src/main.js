@@ -16,14 +16,15 @@ const moviesModel = new MoviesModel();
 
 moviesModel.setMovies(movies);
 
-movies.forEach((movie) => {
-  // moviesModel.addComments(getComments(movie.id, movie.comments));
-  const test = []
-  test.push(getComments(movie.id, movie.comments));
-  moviesModel.addComments(test);
-});
+// movies.forEach((movie) => {
+//   const comments = getComments(movie.id, movie.comments);
+//   console.log(comments)
+//   moviesModel.addComments(comments);
+// });
 
-console.log(moviesModel)
+const foo = getComments();
+
+moviesModel.addComments(foo);
 
 const getAlreadyWatched = () => {
   return movies.filter((movie) => movie.userDetails.alreadyWatched).length;

@@ -3,12 +3,9 @@ export default class Comments {
     this._comments = [];
   }
 
-  addComments(newComments) {
-    if(newComments instanceof Array) {
-      this._comments = this._comments.concat(...newComments);
-    } else {
-      this._comments = this._comments.concat(newComments);
-    }
+  addComments(comments) {
+    this._comments = Array.from(comments);
+    console.log(this._comments)
   }
 
   getComment(id) {

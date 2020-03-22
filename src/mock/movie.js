@@ -46,10 +46,16 @@ const createComment = (id) => {
   };
 };
 
-const getComments = (id, commentIds) => {
-  return commentIds.map((commentId) => {
-      return createComment(commentId);
-    });
+const getComments = () => {
+  const res = [];
+  for (let j = 1; j < 10; j++) {
+    const arr = createComment(j);
+    console.log(arr)
+    res.push(arr);
+    console.log(res)
+  }
+  console.log(res)
+  return res;
 };
 
 let count = 0;
