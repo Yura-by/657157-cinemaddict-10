@@ -3,19 +3,17 @@ export default class Comments {
     this._comments = [];
   }
 
-  addComments(comments) {
-    this._comments = Array.from(comments);
-    console.log(this._comments)
+  setComments(newComments) {
+    this._comments = [].concat(this._comments, newComments)
   }
 
   getComment(id) {
-    return this._comments.find((it) => it.id = id);
+    return this._comments.find((it) => it.id === id);
   }
 
   removeComment(id) {
-    const index = this._comments.find((comment) => {
-      comment.id === id;
-    });
+    const index = this._comments.find((comment) => comment.id === id);
+
     if(index === -1) {
       return false;
     }

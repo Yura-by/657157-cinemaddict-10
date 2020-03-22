@@ -15,17 +15,28 @@ export default class Movies {
 
   getMovies() {
     const moviesWithoutComments = getMoviesByFilter(this._movies, this._activeFilter);
-    const moviesWithComments = moviesWithoutComments.map((movie) => {
+    return this._addComments(moviesWithoutComments);
+  }
+
+  getAllMovies() {
+    const res = this._addComments(this._movies);
+    return res;
+  }
+
+  _addComments(movies) {
+    // if (!movies instanceof Array) {
+    //   const entireComments = movies.comments.map((idComment) => {
+    //     return this.getComment(idComment);
+    //   });
+    //   return Object.assign({}, movies, {comments: entireComments});
+    // }
+    const moviesWithComments = movies.map((movie) => {
       const entireComments = movie.comments.map((idComment) => {
-        return this._commentsModel.getComment(idComment);
+        return this.getComment(idComment);
       });
       return Object.assign({}, movie, {comments: entireComments});
     });
     return moviesWithComments;
-  }
-
-  getAllMovies() {
-    return this._movies;
   }
 
   setMovies(movies) {
@@ -39,7 +50,9 @@ export default class Movies {
       return false;
     }
 
-    this._movies = [].concat(this._movies.slice(0, index), newMovie, this._movies.slice(index + 1));
+    const updatedMovie = Object.assign({}, this._movies[index], {userDetails: newMovie.userDetails});
+
+    this._movies = [].concat(this._movies.slice(0, index), updatedMovie, this._movies.slice(index + 1));
     this._dataChangeHandlers.forEach((handler) => handler());
     return true;
   }
@@ -57,16 +70,16 @@ export default class Movies {
     this._dataChangeHandlers.push(handler);
   }
 
-  addComments(newComments) {
-    this._commentsModel.addComments(newComments);
+  setComments(newComments) {
+    this._commentsModel.setComments(newComments);
   }
 
   getComment(id) {
-    this._commentsModel.getComment(id);
+    return this._commentsModel.getComment(id);
   }
 
   removeComment(id) {
-    this._commentsModel.removeComment(id);
+    return this._commentsModel.removeComment(id);
   }
 
   clearComments() {
