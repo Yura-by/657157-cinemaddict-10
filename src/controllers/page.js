@@ -8,6 +8,7 @@ import MovieController, {Type, Mode} from './movie.js';
 import {render, remove} from '../utils/render.js';
 import {getRatingMovies, getCommentsMovies} from '../utils/extra.js';
 import {Sort, RenderPosition, SHOWING_MOVIES_ON_START} from '../const.js';
+import {Filter} from '../const.js';
 
 const SHOWING_MOVIES_BY_BUTTON = 5;
 
@@ -167,13 +168,12 @@ export default class PageController {
       this._removeExtraComponents();
       this._renderExtraRatingSection();
       this._renderExtraCommentsSection();
+      if (this._moviesModel.getActiveFilterName() !== Filter.ALL) {
+        this._onFilterChange();
+      }
     }
 
     if (movieController.type === Type.EXTRA && movieController.mode === Mode.DEFAULT) {
-      const ordinaryMovieController = this._showedMovieControllers.find((showedMovieController) => showedMovieController._id === movieController._id);
-      if (ordinaryMovieController) {
-        ordinaryMovieController.render(newData);
-      }
       const extraRatingController = this._extraRatingControllers.find((movieExtraController) => movieExtraController._id === movieController._id);
       if (extraRatingController) {
         extraRatingController.render(newData);
@@ -182,19 +182,24 @@ export default class PageController {
       if (extraCommentsController) {
         extraCommentsController.render(newData);
       }
+      this._onFilterChange();
     }
 
     if (movieController.type === Type.EXTRA && movieController.mode === Mode.EDIT) {
-      const ordinaryMovieController = this._showedMovieControllers.find((showedMovieController) => showedMovieController._id === movieController._id);
-      if (ordinaryMovieController) {
-        ordinaryMovieController.render(newData);
-      }
       movieController.render(newData);
       movieController.setCloseHandler(() => {
         this._removeExtraComponents();
         this._renderExtraRatingSection();
         this._renderExtraCommentsSection();
       });
+      if (this._moviesModel.getActiveFilterName() !== Filter.ALL) {
+        this._onFilterChange();
+      } else {
+        const ordinaryMovieController = this._showedMovieControllers.find((showedMovieController) => showedMovieController._id === movieController._id);
+        if (ordinaryMovieController) {
+          ordinaryMovieController.render(newData);
+        }
+      }
     }
   }
 

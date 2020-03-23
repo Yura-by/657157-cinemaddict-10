@@ -85,8 +85,6 @@ export default class Movies {
   removeComment(movieId, idComment) {
     const targetMovie = this._movies.find((movie) => movie.id === movieId);
     const index = targetMovie.comments.findIndex((comment) => {
-      console.log(typeof comment)
-      console.log(typeof idComment)
       return comment === idComment;
     });
     if (index === -1) {
@@ -102,6 +100,10 @@ export default class Movies {
 
   clearComments() {
     this._commentsModel.clearComments();
+  }
+
+  getActiveFilterName() {
+    return this._activeFilter;
   }
 
 }
