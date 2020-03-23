@@ -155,6 +155,14 @@ export default class PageController {
       }
       return;
     }
+
+    if (oldData === null) {
+      this._moviesModel.setComments(newData);
+      this._moviesModel.addCommentToMovie(movieController.getId(), newData.id);
+      this._rerenderMovieController(movieController, this._moviesModel.getMovie(movieController.getId()));
+      return;
+    }
+
     const isSuccess = this._moviesModel.updateMovie(oldData.id, newData);
 
     if (isSuccess) {

@@ -103,7 +103,15 @@ export default class MovieController {
 
     this._infoComponent.setSubmitCommentHandler((commentContent, reaction) => {
       console.log(commentContent, reaction);
-      this._infoComponent.resetElement();
+      const newComment = {
+        id: String(Math.floor(new Date().getTime() + Math.random() * 1000000)),
+        author: 'Somebody',
+        emotion: reaction,
+        comment: commentContent,
+        date: String(new Date().toISOString())
+      }
+      this._onDataChange(this, null, newComment);
+      // this._infoComponent.resetElement();
     });
 
     this._infoComponent.setCloseButtonHandler(this._hideInfoElement);
@@ -137,6 +145,10 @@ export default class MovieController {
     if (this.mode !== Mode.DEFAULT) {
       this._hideInfoElement();
     }
+  }
+
+  getId() {
+    return this._id;
   }
 
   _showInfoElement() {

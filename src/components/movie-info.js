@@ -138,7 +138,6 @@ export default class MovieInfo extends AbstractSmartComponent {
     commentElement.addEventListener(`keydown`, (evt) => {
       if (evt.key === `Enter` && evt.ctrlKey && commentElement.value) {
         handler(commentElement.value, this._commentReaction);
-        this.resetElement();
       }
     });
     this._onCommentSubmit = handler;

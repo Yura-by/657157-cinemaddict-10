@@ -78,6 +78,10 @@ export default class Movies {
     this._commentsModel.setComments(newComments);
   }
 
+  addCommentToMovie(movieId, commentId) {
+    this._movies.find((movie) => movie.id === movieId).comments.push(commentId);
+  }
+
   getComment(id) {
     return this._commentsModel.getComment(id);
   }

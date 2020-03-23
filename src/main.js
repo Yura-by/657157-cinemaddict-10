@@ -8,7 +8,7 @@ import MoviesModel from './models/movies.js';
 import FilterController from './controllers/filter.js';
 import {getComments} from './mock/movie.js';
 
-const COUNT_MOVIES = 3;
+const COUNT_MOVIES = 1;
 
 const movies = generateMovies(COUNT_MOVIES);
 
