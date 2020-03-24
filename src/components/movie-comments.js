@@ -18,10 +18,11 @@ const getCommentsMarkup = (comments) => {
   return comments.map((commentItem) => {
     const {id, emotion, comment, author, date} = commentItem;
     const coutnDays = getCommentDate(date);
+    const imageMarkup = emotion ? `<img src="./images/emoji/${emotion}.png" width="55" height="55" alt="emoji"></img>` : ``;
     return (
       `<li class="film-details__comment">
         <span class="film-details__comment-emoji">
-          <img src="./images/emoji/${emotion}.png" width="55" height="55" alt="emoji">
+          ${imageMarkup}
         </span>
         <div>
           <p class="film-details__comment-text">${comment}</p>

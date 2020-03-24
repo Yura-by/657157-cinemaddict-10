@@ -102,7 +102,6 @@ export default class MovieController {
     });
 
     this._infoComponent.setSubmitCommentHandler((commentContent, reaction) => {
-      console.log(commentContent, reaction);
       const newComment = {
         id: String(Math.floor(new Date().getTime() + Math.random() * 1000000)),
         author: 'Somebody',
@@ -111,7 +110,6 @@ export default class MovieController {
         date: String(new Date().toISOString())
       }
       this._onDataChange(this, null, newComment);
-      // this._infoComponent.resetElement();
     });
 
     this._infoComponent.setCloseButtonHandler(this._hideInfoElement);
