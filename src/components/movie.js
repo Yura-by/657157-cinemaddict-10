@@ -8,6 +8,12 @@ const createMovieTemplate = (movie) => {
     return ``;
   }
   const {userDetails: {favorite}, userDetails: {alreadyWatched}, userDetails: {watchlist}, filmInfo: {poster}, filmInfo: {title}, filmInfo: {totalRating}, filmInfo: {release: {date}}, filmInfo: {runtime}, filmInfo: {genre}, filmInfo: {description}, comments} = movie;
+  let finishDesctiption = description;
+
+  if (description.length > 138) {
+    finishDesctiption = finishDesctiption.slice(0, 140);
+    finishDesctiption = `${finishDesctiption}...`;
+  }
   const duration = getDurationInFormat(runtime);
   const year = date.getFullYear();
   const genreFirst = genre[0];
@@ -22,7 +28,7 @@ const createMovieTemplate = (movie) => {
         <span class="film-card__genre">${genreFirst}</span>
       </p>
       <img src="${poster}" alt="${title}" class="film-card__poster">
-      <p class="film-card__description">${description}</p>
+      <p class="film-card__description">${finishDesctiption}</p>
       <a class="film-card__comments">${countComments}</a>
       <form class="film-card__controls">
         <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${watchlist ? ACTIVE_CLASS : ``}" type="button">Add to watchlist</button>

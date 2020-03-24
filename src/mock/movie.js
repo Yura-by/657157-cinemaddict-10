@@ -29,7 +29,7 @@ const getRandomDate = () => {
 };
 
 const getDescription = (sentenses) => {
-  return getRandomArray(sentenses, getRandomNumber(1, 5), 1);
+  return getRandomArray(sentenses, getRandomNumber(1, 5), 1).join(``);
 };
 
 const getDateWatching = (isWaiting) => {
