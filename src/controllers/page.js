@@ -38,6 +38,7 @@ export default class PageController {
     this._loadMoreButtomComponent = null;
     this._extraRatingComponent = null;
     this._extraCommentsComponent = null;
+    this._sortType = Sort.DEFAULT;
 
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
@@ -75,6 +76,11 @@ export default class PageController {
     if (this._showedMovieControllers.length > 0) {
       this._removeMovies();
     }
+    if (this._sortType !== Sort.DEFAULT) {
+      const movies = this._determineSortMovies(this._sortType);
+      this._renderMovies(movies);
+      return;
+    }
     this._renderMovies(this._moviesModel.getMovies().slice(0, SHOWING_MOVIES_ON_START));
     this._renderLoadMoreButton(this._moviesModel.getMovies().length);
   }
@@ -100,6 +106,20 @@ export default class PageController {
 
   _onSortTypeChange(sortType) {
     const movies = this._moviesModel.getMovies();
+    const sortMovies = this._determineSortMovies(sortType);
+    this._removeMovies();
+    this._renderMovies(sortMovies);
+
+    if (sortType === Sort.DEFAULT) {
+      this._renderLoadMoreButton(movies.length);
+    } else if (this._loadMoreButtomComponent && this._container.contains(this._loadMoreButtomComponent.getElement())) {
+      remove(this._loadMoreButtomComponent);
+    }
+  }
+
+  _determineSortMovies(sortType) {
+    this._sortType = sortType;
+    const movies = this._moviesModel.getMovies();
     let sortMovies = [];
     switch (sortType) {
       case Sort.DATE:
@@ -113,14 +133,7 @@ export default class PageController {
         sortMovies = movies.slice(0, this._showingMoviesCount);
         break;
     }
-    this._removeMovies();
-    this._renderMovies(sortMovies);
-
-    if (sortType === Sort.DEFAULT) {
-      this._renderLoadMoreButton(movies.length);
-    } else if (this._loadMoreButtomComponent && this._container.contains(this._loadMoreButtomComponent.getElement())) {
-      remove(this._loadMoreButtomComponent);
-    }
+    return sortMovies;
   }
 
   _renderLoadMoreButton(length) {
