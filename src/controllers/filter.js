@@ -40,6 +40,10 @@ export default class FilterController {
     }
   }
 
+  setMenuChangeHandler(handler) {
+    this._filterComponent.setMenuChangeHandler(handler);
+  }
+
   _onFilterChange(filterType) {
     this._moviesModel.setFilter(filterType);
     this._activeFilterType = filterType;

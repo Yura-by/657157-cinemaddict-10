@@ -1,5 +1,6 @@
 import AbstractComponent from './abstract-component.js';
 import {Filter} from '../const.js';
+import {Menu} from '../const.js';
 
 const ACTIVE_CLASS = `main-navigation__item--active`;
 
@@ -42,9 +43,30 @@ export default class Extra extends AbstractComponent {
       if (evt.target.tagName !== `A` || evt.target.classList.contains(`main-navigation__item--additional`)) {
         return;
       }
-      this.getElement().querySelector(`.${ACTIVE_CLASS}`).classList.remove(ACTIVE_CLASS);
-      evt.target.classList.add(ACTIVE_CLASS);
+      this._toggleActiveClass(evt.target);
       handler(evt.target.dataset.filterName);
+    });
+  }
+
+  _toggleActiveClass(targetElement) {
+    this.getElement().querySelector(`.${ACTIVE_CLASS}`).classList.remove(ACTIVE_CLASS);
+    targetElement.classList.add(ACTIVE_CLASS);
+  }
+
+  setMenuChangeHandler(handler) {
+    this.getElement().addEventListener(`click`, (evt) => {
+
+      evt.preventDefault();
+      if (evt.target.tagName !== `A`) {
+        return;
+      }
+      this._toggleActiveClass(evt.target);
+
+      if (evt.target.classList.contains(`main-navigation__item--additional`)) {
+        handler(Menu.STATS);
+      } else {
+        handler(Menu.PAGE);
+      }
     });
   }
 }

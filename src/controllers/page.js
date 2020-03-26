@@ -72,6 +72,16 @@ export default class PageController {
     this._renderExtraCommentsSection();
   }
 
+  hide() {
+    this._sortsComponent.hide();
+    this._filmsComponent.hide();
+  }
+
+  show() {
+    this._sortsComponent.show();
+    this._filmsComponent.show();
+  }
+
   _onFilterChange() {
     if (this._showedMovieControllers.length > 0) {
       this._removeMovies();

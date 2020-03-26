@@ -18,6 +18,11 @@ const RenderPosition = {
   BEFOREEND: `beforeend`
 };
 
+const Menu = {
+  STATS: `stats`,
+  PAGE: `page`
+};
+
 const SHOWING_MOVIES_ON_START = 5;
 
-export {Filter, Sort, Emotion, RenderPosition, SHOWING_MOVIES_ON_START};
+export {Filter, Sort, Emotion, RenderPosition, SHOWING_MOVIES_ON_START, Menu};
