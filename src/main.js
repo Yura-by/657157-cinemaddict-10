@@ -10,7 +10,7 @@ import FilterController from './controllers/filter.js';
 import {getComments} from './mock/movie.js';
 import {getAlreadyWatched} from './utils/common.js';
 
-const COUNT_MOVIES = 5;
+const COUNT_MOVIES = 2;
 
 const movies = generateMovies(COUNT_MOVIES);
 

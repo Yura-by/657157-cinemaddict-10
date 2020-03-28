@@ -56,20 +56,51 @@ const renderChart = (ctx, genres) => {
       datasets: [{
         data: dataChart,
         backgroundColor: Array(dataChart.length).fill(BAR_COLOR),
-        barThickness: 20
-      }]
+        barThickness: 20,
+      }],
     },
     options: {
+      layout: {
+        padding: {
+          left: 50,
+          right: 0,
+          top: 0,
+          bottom: 0
+        }
+      },
+      // plugins: {
+      //   datasets: [{
+      //     data: dataChart
+      //   }]
+      // },
       plugins: {
-        datasets: [{
-          data: dataChart
-        }]
+        datalabels: {
+          labels: {
+            title: {
+              color: `white`,
+              anchor: `start`,
+              align: `left`
+            }
+          },
+          font: {
+            size: 16
+          },
+          // formatter(value) {
+          //   return `€ ${value}`;
+          // },
+          color: `white`
+        }
       },
       scales: {
         xAxes: [{
           display: false,
           ticks: {
-            beginAtZero: true
+            beginAtZero: true,
+          },
+        }],
+        yAxes: [{
+          ticks: {
+            padding: 30,
           }
         }]
       },
