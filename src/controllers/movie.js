@@ -56,6 +56,11 @@ export default class MovieController {
     this._movieComponent.setAsWatchedHandler(() => {
       const newMovieUserDetails = Object.assign({}, movie.userDetails);
       newMovieUserDetails.alreadyWatched = !movie.userDetails.alreadyWatched;
+      if (newMovieUserDetails.alreadyWatched) {
+        newMovieUserDetails.watchingDate = new Date();
+      } else {
+        newMovieUserDetails.watchingDate = null;
+      }
       this._onDataChange(this, movie, Object.assign({}, movie, {userDetails: newMovieUserDetails}));
     });
 

@@ -13,6 +13,8 @@ export default class FilterController {
 
     this._onFilterChange = this._onFilterChange.bind(this);
     this._onDataChange = this._onDataChange.bind(this);
+    this._onMenuChange = null;
+
 
     this._moviesModel.setDataChangeHandler(this._onDataChange);
   }
@@ -32,6 +34,9 @@ export default class FilterController {
 
     this._filterComponent = new FilterComponent(filters);
     this._filterComponent.setFilterChangeHandler(this._onFilterChange);
+    if (this._onMenuChange) {
+      this._filterComponent.setMenuChangeHandler(this._onMenuChange);
+    }
 
     if (oldFilterComponent) {
       replace(this._filterComponent, oldFilterComponent);
@@ -42,6 +47,7 @@ export default class FilterController {
 
   setMenuChangeHandler(handler) {
     this._filterComponent.setMenuChangeHandler(handler);
+    this._onMenuChange = handler;
   }
 
   _onFilterChange(filterType) {

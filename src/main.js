@@ -8,8 +8,9 @@ import {render} from './utils/render.js';
 import MoviesModel from './models/movies.js';
 import FilterController from './controllers/filter.js';
 import {getComments} from './mock/movie.js';
+import {getAlreadyWatched} from './utils/common.js';
 
-const COUNT_MOVIES = 12;
+const COUNT_MOVIES = 5;
 
 const movies = generateMovies(COUNT_MOVIES);
 
@@ -21,14 +22,10 @@ movies.forEach((movie) => {
   moviesModel.setComments(getComments(movie.comments));
 });
 
-const getAlreadyWatched = () => {
-  return movies.filter((movie) => movie.userDetails.alreadyWatched).length;
-};
-
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 
-render(headerElement, new ProfileComponent(getAlreadyWatched()), RenderPosition.BEFOREEND);
+render(headerElement, new ProfileComponent(getAlreadyWatched(movies)), RenderPosition.BEFOREEND);
 const filterController = new FilterController(mainElement, moviesModel);
 filterController.render();
 
@@ -38,11 +35,13 @@ const pageController = new PageController(mainElement, moviesModel);
 
 pageController.render();
 
-const statisticsComponent = new StatisticsComponent();
+const statisticsComponent = new StatisticsComponent(moviesModel);
 
 render(mainElement, statisticsComponent, RenderPosition.BEFOREEND);
 
 statisticsComponent.hide();
+
+statisticsComponent.renderChart();
 
 filterController.setMenuChangeHandler((menuItem) => {
   switch (menuItem) {

@@ -1,24 +1,9 @@
 import AbstractComponent from './abstract-component.js';
-
-const Status = {
-  NOVISE: `Novice`,
-  FAN: `Fan`,
-  BUFF: `Movie Buff`
-};
+import {getStatusName} from '../utils/common.js';
 
 const createProfileTemplate = (countWatched) => {
-  let status = ``;
-  switch (true) {
-    case countWatched > 0 && countWatched <= 10 :
-      status = Status.NOVISE;
-      break;
-    case countWatched > 10 && countWatched <= 20 :
-      status = Status.FAN;
-      break;
-    case countWatched > 20:
-      status = Status.BUFF;
-      break;
-  }
+
+  const status = getStatusName(countWatched);
 
   return (
     `<section class="header__profile profile">

@@ -1,5 +1,11 @@
 import moment from 'moment';
 
+const Status = {
+  NOVISE: `Novice`,
+  FAN: `Fan`,
+  BUFF: `Movie Buff`
+};
+
 const getDurationInFormat = (duration) => {
   const hour = Math.floor(duration / 60);
   const minutes = duration % 60;
@@ -17,4 +23,24 @@ const getCommentDate = (date) => {
   return moment(date).format(`YYYY/MM/DD HH:mm`);
 };
 
-export {getDurationInFormat, getReleaseString, getCommentDate};
+const getStatusName = (countWatched) => {
+  let status = ``;
+  switch (true) {
+    case countWatched > 0 && countWatched <= 10 :
+      status = Status.NOVISE;
+      break;
+    case countWatched > 10 && countWatched <= 20 :
+      status = Status.FAN;
+      break;
+    case countWatched > 20:
+      status = Status.BUFF;
+      break;
+  }
+  return status;
+};
+
+const getAlreadyWatched = (movies) => {
+  return movies.filter((movie) => movie.userDetails.alreadyWatched).length;
+};
+
+export {getDurationInFormat, getReleaseString, getCommentDate, getStatusName, getAlreadyWatched};
