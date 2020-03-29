@@ -10,7 +10,7 @@ import FilterController from './controllers/filter.js';
 import {getComments} from './mock/movie.js';
 import {getAlreadyWatched} from './utils/common.js';
 
-const COUNT_MOVIES = 2;
+const COUNT_MOVIES = 7;
 
 const movies = generateMovies(COUNT_MOVIES);
 
@@ -35,13 +35,11 @@ const pageController = new PageController(mainElement, moviesModel);
 
 pageController.render();
 
-const statisticsComponent = new StatisticsComponent(moviesModel);
+const statisticsComponent = new StatisticsComponent(moviesModel, new Date());
 
 render(mainElement, statisticsComponent, RenderPosition.BEFOREEND);
 
 statisticsComponent.hide();
-
-statisticsComponent.renderChart();
 
 filterController.setMenuChangeHandler((menuItem) => {
   switch (menuItem) {
