@@ -1,0 +1,55 @@
+import Movie from './models/movie.js';
+
+const checkStatus = (response) => {
+  if (response.status >= 200 && response.status < 300) {
+    return response;
+  } else {
+    throw new Error(`${response.status}: ${response.statusText}`);
+  }
+};
+
+const Method = {
+  GET: `GET`,
+  POST: `POST`,
+  PUT: `PUT`,
+  DELETE: `DELETE`
+};
+
+export default class Api {
+  constructor(endPoint, authorization) {
+    this._endPoint = endPoint;
+    this._authorization = authorization;
+  }
+
+  getMovies() {
+    return this._load({url: `movies`})
+      .then((response) => response.json())
+      .then(Movie.parseMovies);
+  }
+
+  getComments() {
+
+  }
+
+  createComment(comment) {
+
+  }
+
+  updateMovie(id, data) {
+
+  }
+
+  deleteComment(id) {
+
+  }
+
+  _load({url, method = Method.GET, body = null, headers = new Headers()}) {
+    headers.append(`Authorization`, this._authorization);
+
+    return fetch(`${this._endPoint}/${url}`, {method, body, headers}).
+      then(checkStatus)
+      .catch((err) => {
+        throw err;
+      });
+  }
+}
