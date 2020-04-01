@@ -30,32 +30,32 @@ export default class Movie {
 
   toRAW() {
     return {
-      id: this.id,
-      filmInfo: {
-        title: this.filmInfo.title,
-        alternativeTitle: this.filmInfo.alternativeTitle,
-        totalRating: this.filmInfo.totalRating,
-        poster: this.filmInfo.poster,
-        ageRating: this.filmInfo.ageRating,
-        director: this.filmInfo.director,
-        writers: this.filmInfo.writers,
-        actors: this.filmInfo.actors,
-        release: {
-          date: this.release.date.toISOString(),
-          releaseCountry: this.release.releaseCountry
+      'id': this.id,
+      'filmInfo': {
+        'title': this.filmInfo.title,
+        'alternativeTitle': this.filmInfo.alternativeTitle,
+        'totalRating': this.filmInfo.totalRating,
+        'poster': this.filmInfo.poster,
+        'ageRating': this.filmInfo.ageRating,
+        'director': this.filmInfo.director,
+        'writers': this.filmInfo.writers,
+        'actors': this.filmInfo.actors,
+        'release': {
+          'date': this.release.date.toISOString(),
+          'releaseCountry': this.release.releaseCountry
         },
-        runtime: this.filmInfo.runtime,
-        genre: this.filmInfo.genre,
-        description: this.filmInfo.description
+        'runtime': this.filmInfo.runtime,
+        'genre': this.filmInfo.genre,
+        'description': this.filmInfo.description
       },
-      userDetails: {
-        personalRating: this.userDetails.personalRating,
-        watchlist: this.userDetails.watchlist,
-        alreadyWatched: this.userDetails.alreadyWatched,
-        watchingDate: this.userDetails.watchingDate,
-        favorite: this.userDetails.favorite
+      'userDetails': {
+        'personalRating': this.userDetails.personalRating,
+        'watchlist': this.userDetails.watchlist,
+        'alreadyWatched': this.userDetails.alreadyWatched,
+        'watchingDate': this.userDetails.watchingDate.toISOString(),
+        'favorite': this.userDetails.favorite
       },
-      comments: this.userDetails.comments
+      'comments': this.comments
     };
   }
 }
