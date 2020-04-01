@@ -1,4 +1,5 @@
 import Movie from './models/movie.js';
+import Comment from './models/comment.js';
 
 const checkStatus = (response) => {
   if (response.status >= 200 && response.status < 300) {
@@ -23,25 +24,29 @@ export default class Api {
 
   getMovies() {
     return this._load({url: `movies`})
-      .then((response) => response.json())
+      .then((response) => {
+        return response.json()})
       .then(Movie.parseMovies);
   }
 
-  getComments() {
-
+  getComments(movieId) {
+    return this._load({url: `comments/${movieId}`})
+      .then((response) => {
+        return response.json()})
+      .then(Comment.parseComments);
   }
 
-  createComment(comment) {
+  // createComment(comment) {
 
-  }
+  // }
 
-  updateMovie(id, data) {
+  // updateMovie(id, data) {
 
-  }
+  // }
 
-  deleteComment(id) {
+  // deleteComment(id) {
 
-  }
+  // }
 
   _load({url, method = Method.GET, body = null, headers = new Headers()}) {
     headers.append(`Authorization`, this._authorization);

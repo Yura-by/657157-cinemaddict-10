@@ -2,28 +2,28 @@ export default class Movie {
   constructor(data) {
     this.id = data.id;
     this.filmInfo = {
-      title: data.filmInfo.title,
-      alternativeTitle: data.filmInfo.alternativeTitle,
-      totalRating: data.filmInfo.totalRating,
-      poster: data.filmInfo.poster,
-      ageRating: data.filmInfo.ageRating,
-      director: data.filmInfo.director,
-      writers: data.filmInfo.writers,
-      actors: data.filmInfo.actors,
+      title: data.film_info.title,
+      alternativeTitle: data.film_info.alternative_title,
+      totalRating: data.film_info.total_rating,
+      poster: data.film_info.poster,
+      ageRating: data.film_info.age_rating,
+      director: data.film_info.director,
+      writers: data.film_info.writers,
+      actors: data.film_info.actors,
       release: {
-        date: new Date(data.filmInfo.release.date),
-        releaseCountry: data.filmInfo.release.releaseCountry
+        date: new Date(data.film_info.release.date),
+        releaseCountry: data.film_info.release.release_country
       },
-      runtime: data.filmInfo.runtime,
-      genre: data.filmInfo.genre,
-      description: data.filmInfo.description
+      runtime: data.film_info.runtime,
+      genre: data.film_info.genre,
+      description: data.film_info.description
     };
     this.userDetails = {
-      personalRating: data.userDetails.personalRating,
-      watchlist: data.userDetails.watchlist,
-      alreadyWatched: data.userDetails.alreadyWatched,
-      watchingDate: data.userDetails.watchingDate ? new Date(data.userDetails.watchingDate) : null,
-      favorite: data.userDetails.favorite
+      personalRating: data.user_details.personal_rating,
+      watchlist: data.user_details.watchlist,
+      alreadyWatched: data.user_details.alreadyWatched,
+      watchingDate: data.user_details.watching_date ? new Date(data.user_details.watching_date) : null,
+      favorite: data.user_details.favorite
     };
     this.comments = data.comments;
   }
@@ -31,31 +31,39 @@ export default class Movie {
   toRAW() {
     return {
       'id': this.id,
-      'filmInfo': {
+      'film_info': {
         'title': this.filmInfo.title,
-        'alternativeTitle': this.filmInfo.alternativeTitle,
-        'totalRating': this.filmInfo.totalRating,
+        'alternative_title': this.filmInfo.alternativeTitle,
+        'total_rating': this.filmInfo.totalRating,
         'poster': this.filmInfo.poster,
-        'ageRating': this.filmInfo.ageRating,
+        'age_rating': this.filmInfo.ageRating,
         'director': this.filmInfo.director,
         'writers': this.filmInfo.writers,
         'actors': this.filmInfo.actors,
         'release': {
           'date': this.release.date.toISOString(),
-          'releaseCountry': this.release.releaseCountry
+          'release_country': this.release.releaseCountry
         },
         'runtime': this.filmInfo.runtime,
         'genre': this.filmInfo.genre,
         'description': this.filmInfo.description
       },
-      'userDetails': {
-        'personalRating': this.userDetails.personalRating,
+      'user_details': {
+        'personal_rating': this.userDetails.personalRating,
         'watchlist': this.userDetails.watchlist,
-        'alreadyWatched': this.userDetails.alreadyWatched,
-        'watchingDate': this.userDetails.watchingDate.toISOString(),
+        'already_watched': this.userDetails.alreadyWatched,
+        'watching_date': this.userDetails.watchingDate.toISOString(),
         'favorite': this.userDetails.favorite
       },
       'comments': this.comments
     };
+  }
+
+  static parseMovie(data) {
+    return new Movie(data);
+  }
+
+  static parseMovies(data) {
+    return data.map(Movie.parseMovie);
   }
 }
