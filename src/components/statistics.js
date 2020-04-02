@@ -47,7 +47,7 @@ Chart.defaults.global.defaultFontSize = 16;
 const renderChart = (ctx, genres) => {
   const labelsChart = genres.map((item) => item.genre);
   const dataChart = genres.map((item) => Number(item.count));
- return new Chart(ctx, {
+  return new Chart(ctx, {
     plugins: [ChartDataLabels],
     type: `horizontalBar`,
     data: {
@@ -109,8 +109,8 @@ const getWatchedMovies = (movies) => {
 const createStatisticsTemplate = (movies, allWatched) => {
   const countAllWatched = movies.length;
   const totalDurationInMinutes = movies.reduce((accumulator, movie) => {
-    const count = accumulator += movie.userDetails.watchingDate.getMinutes();
-    return count;
+    accumulator += movie.filmInfo.runtime;
+    return accumulator;
   }, 0);
   const hours = Math.floor(totalDurationInMinutes / 60);
   const minutes = totalDurationInMinutes % 60;
@@ -178,8 +178,8 @@ const Period = {
 const getIsOneDay = (dateNow, dateMovie) => {
   const momentNow = moment(dateNow);
   const momentMovie = moment(dateMovie);
-  return momentNow.diff(momentMovie, `days`) === 0 && momentNow.get('date') === momentMovie.get('date');
-}
+  return momentNow.diff(momentMovie, `days`) === 0 && momentNow.get(`date`) === momentMovie.get(`date`);
+};
 
 const getMoviesInPeriod = (dateNow, period, movies) => {
   const moviesInPeriod = movies;
@@ -207,7 +207,7 @@ const getMoviesInPeriod = (dateNow, period, movies) => {
       });
   }
   return moviesInPeriod;
-}
+};
 
 export default class Statistics extends SmartComponent {
   constructor(moviesModel, dateNow) {
@@ -260,7 +260,6 @@ export default class Statistics extends SmartComponent {
     this._resetChart();
 
     this._chart = renderChart(context, moviesComplete);
-    console.log(this._movies)
   }
 
   _setCheckedState(name) {

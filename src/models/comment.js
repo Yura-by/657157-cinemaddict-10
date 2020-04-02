@@ -3,7 +3,7 @@ export default class Comment {
     this.id = data.id;
     this.author = data.author;
     this.emotion = data.emotion;
-    this.comment = data.commment;
+    this.comment = data.comment;
     this.date = data.date;
   }
 
@@ -12,7 +12,7 @@ export default class Comment {
       'emotion': this.emotion,
       'comment': this.comment,
       'date': this.date
-    }
+    };
   }
 
   static parseComment(data) {

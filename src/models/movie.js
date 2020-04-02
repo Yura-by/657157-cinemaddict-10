@@ -21,7 +21,7 @@ export default class Movie {
     this.userDetails = {
       personalRating: data.user_details.personal_rating,
       watchlist: data.user_details.watchlist,
-      alreadyWatched: data.user_details.alreadyWatched,
+      alreadyWatched: data.user_details.already_watched,
       watchingDate: data.user_details.watching_date ? new Date(data.user_details.watching_date) : null,
       favorite: data.user_details.favorite
     };
