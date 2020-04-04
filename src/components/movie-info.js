@@ -107,13 +107,28 @@ export default class MovieInfo extends AbstractSmartComponent {
     this._onUndoClick = handler;
   }
 
+  setRatingDisabled() {
+    const ratingElements = this.getElement().querySelectorAll(`.film-details__user-rating-input`);
+    ratingElements.forEach((it) => {
+      it.disabled = true;
+    });
+  }
+
+  resetRatingDisabled() {
+    const ratingElements = this.getElement().querySelectorAll(`.film-details__user-rating-input`);
+    ratingElements.forEach((it) => {
+      it.disabled = false;
+    });
+  }
+
   setRatingHandler(handler) {
     const ratingContainerElement = this.getElement().querySelector(`.film-details__user-rating-score`);
     if (ratingContainerElement) {
       ratingContainerElement.addEventListener(`click`, (evt) => {
-        if (evt.target.tagName !== `INPUT`) {
+        if (evt.target.tagName !== `INPUT` || evt.target.disabled) {
           return;
         }
+        evt.preventDefault();
         handler(evt.target.value);
       });
     }
@@ -131,6 +146,16 @@ export default class MovieInfo extends AbstractSmartComponent {
     });
 
     this.rerender();
+  }
+
+  setDisabledCommentField() {
+    const inputCommentElement = this.getElement().querySelector(`.film-details__comment-input`);
+    inputCommentElement.disabled = true;
+  }
+
+  resetDisabledCommentField() {
+    const inputCommentElement = this.getElement().querySelector(`.film-details__comment-input`);
+    inputCommentElement.disabled = false;
   }
 
   setSubmitCommentHandler(handler) {

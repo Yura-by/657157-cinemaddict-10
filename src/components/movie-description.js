@@ -1,6 +1,6 @@
 import {getDurationInFormat} from '../utils/common.js';
 import AbstractComponent from './abstract-component.js';
-import {getReleaseString} from '../utils/common.js';;
+import {getReleaseString} from '../utils/common.js';
 
 const getFilmsGenresMarkup = (genres) => {
   return genres.map((genre) => {
@@ -102,6 +102,6 @@ export default class MovieDescription extends AbstractComponent {
   }
 
   getTemplate() {
-    return createDescriptionTemplate(this._movie, this._isWatched, this._personalRating );
+    return createDescriptionTemplate(this._movie, this._isWatched, this._personalRating);
   }
 }

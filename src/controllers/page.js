@@ -173,10 +173,16 @@ export default class PageController {
 
   _onDataChange(movieController, oldData, newData, idComment) {
     if (newData === null) {
-      const isSuccess = this._moviesModel.removeComment(oldData.id, idComment);
-      if (isSuccess) {
-        this._rerenderMovieController(movieController, this._moviesModel.getMovie(oldData.id));
-      }
+      this._api.deleteComment(idComment)
+        .then(() => {
+          const isSuccess = this._moviesModel.removeComment(oldData.id, idComment);
+          if (isSuccess) {
+            this._rerenderMovieController(movieController, this._moviesModel.getMovie(oldData.id));
+          }
+        })
+        .catch(() => {
+          movieController.shake();
+        });
       return;
     }
 
@@ -187,6 +193,9 @@ export default class PageController {
           this._moviesModel.setComments(newComment);
           this._moviesModel.addCommentToMovie(movieController.getId(), newComment.id);
           this._rerenderMovieController(movieController, this._moviesModel.getMovie(movieController.getId()));
+        })
+        .catch(() => {
+          movieController.shake();
         });
       return;
     }
@@ -197,6 +206,9 @@ export default class PageController {
         if (isSuccess) {
           this._rerenderMovieController(movieController, this._moviesModel.getMovie(response.id));
         }
+      })
+      .catch(() => {
+        movieController.shake();
       });
   }
 

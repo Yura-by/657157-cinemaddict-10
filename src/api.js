@@ -33,7 +33,8 @@ export default class Api {
   getComments(movieId) {
     return this._load({url: `comments/${movieId}`})
       .then((response) => {
-        return response.json()})
+        return response.json();
+      })
       .then(Comment.parseComments);
   }
 
@@ -56,12 +57,12 @@ export default class Api {
       headers: new Headers({'Content-Type': `Application/json`})
     })
       .then((response) => response.json())
-      .then(Comment.parseComment);
+      .then(Movie.parseMovie);
   }
 
-  // deleteComment(id) {
-
-  // }
+  deleteComment(id) {
+    return this._load({url: `comments/${id}`, method: Method.DELETE});
+  }
 
   _load({url, method = Method.GET, body = null, headers = new Headers()}) {
     headers.append(`Authorization`, this._authorization);

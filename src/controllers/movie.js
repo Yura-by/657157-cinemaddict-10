@@ -16,6 +16,8 @@ const Type = {
   EXTRA: `extra`
 };
 
+const SHAKE_ANIMATION_TIMEOUT = 600;
+
 export default class MovieController {
   constructor(container, onDataChange, onViewChange) {
     this._container = container;
@@ -60,6 +62,8 @@ export default class MovieController {
       newMovie.userDetails.alreadyWatched = !movie.userDetails.alreadyWatched;
       if (newMovie.userDetails.alreadyWatched) {
         newMovie.userDetails.watchingDate = new Date();
+      } else {
+        newMovie.userDetails.personalRating = 0;
       }
       this._onDataChange(this, movie, newMovie);
     });
@@ -70,22 +74,27 @@ export default class MovieController {
       this._onDataChange(this, movie, newMovie);
     });
 
-    this._infoComponent.setAddToWatchlistHandler(() => {
+    this._infoComponent.setAddToWatchlistHandler((evt) => {
+      evt.preventDefault();
       const newMovie = Movie.clone(movie);
       newMovie.userDetails.watchlist = !movie.userDetails.watchlist;
       this._onDataChange(this, movie, newMovie);
     });
 
-    this._infoComponent.setAsWatchedHandler(() => {
+    this._infoComponent.setAsWatchedHandler((evt) => {
+      evt.preventDefault();
       const newMovie = Movie.clone(movie);
       newMovie.userDetails.alreadyWatched = !movie.userDetails.alreadyWatched;
       if (newMovie.userDetails.alreadyWatched) {
         newMovie.userDetails.watchingDate = new Date();
+      } else {
+        newMovie.userDetails.personalRating = 0;
       }
       this._onDataChange(this, movie, newMovie);
     });
 
-    this._infoComponent.setFavoriteHandler(() => {
+    this._infoComponent.setFavoriteHandler((evt) => {
+      evt.preventDefault();
       const newMovie = Movie.clone(movie);
       newMovie.userDetails.favorite = !movie.userDetails.favorite;
       this._onDataChange(this, movie, newMovie);
@@ -103,6 +112,7 @@ export default class MovieController {
     this._infoComponent.setRatingHandler((rating) => {
       const newMovie = Movie.clone(movie);
       newMovie.userDetails.personalRating = Number(rating);
+      this._infoComponent.setRatingDisabled();
       this._onDataChange(this, movie, newMovie);
     });
 
@@ -112,6 +122,7 @@ export default class MovieController {
         comment: commentContent,
         date: String(new Date().toISOString())
       });
+      this._infoComponent.setDisabledCommentField();
       this._onDataChange(this, null, newComment);
     });
 
@@ -150,6 +161,34 @@ export default class MovieController {
 
   getId() {
     return this._id;
+  }
+
+  shake() {
+    this._movieComponent.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+    this._infoComponent.getElement().querySelector(`.film-details__comment-input`).style.boxShadow = `0 0 10px rgba(255,0,0,1)`;
+    const ratingLabelElements = this._infoComponent.getElement().querySelectorAll(`.film-details__user-rating-label`);
+    ratingLabelElements.forEach((labelElement) => {
+      labelElement.style.backgroundColor = `rgb(255, 0, 0)`;
+    });
+    const checkedElement = Array.from(this._infoComponent.getElement().querySelectorAll(`.film-details__user-rating-input`)).find((it) => it.checked === true);
+    if (checkedElement) {
+      checkedElement.nextElementSibling.style.backgroundColor = `#ffe800`;
+    }
+    this._infoComponent.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+
+    setTimeout(() => {
+      this._movieComponent.getElement().style.animation = ``;
+      this._infoComponent.getElement().querySelector(`.film-details__comment-input`).style.boxShadow = ``;
+      this._infoComponent.getElement().style.animation = ``;
+      ratingLabelElements.forEach((labelElement) => {
+        labelElement.style.backgroundColor = `#d8d8d8`;
+      });
+      if (checkedElement) {
+        checkedElement.nextElementSibling.style.backgroundColor = `#ffe800`;
+      }
+      this._infoComponent.resetRatingDisabled();
+      this._infoComponent.resetDisabledCommentField();
+    }, SHAKE_ANIMATION_TIMEOUT);
   }
 
   _showInfoElement() {
