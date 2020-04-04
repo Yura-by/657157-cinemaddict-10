@@ -136,7 +136,7 @@ export default class MovieInfo extends AbstractSmartComponent {
   setSubmitCommentHandler(handler) {
     const commentElement = this.getElement().querySelector(`.film-details__comment-input`);
     commentElement.addEventListener(`keydown`, (evt) => {
-      if (evt.key === `Enter` && evt.ctrlKey && commentElement.value) {
+      if (evt.key === `Enter` && evt.ctrlKey && commentElement.value && this._commentReaction) {
         handler(commentElement.value, this._commentReaction);
       }
     });
@@ -151,7 +151,7 @@ export default class MovieInfo extends AbstractSmartComponent {
         return;
       }
       handler(evt.target.dataset.commentId);
-    })
+    });
     this._onDeleteButtonClick = handler;
   }
 }

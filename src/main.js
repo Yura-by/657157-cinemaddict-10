@@ -31,7 +31,7 @@ const moviesModel = new MoviesModel();
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 const filterController = new FilterController(mainElement, moviesModel);
-const pageController = new PageController(mainElement, moviesModel);
+const pageController = new PageController(mainElement, moviesModel, api);
 const statisticsComponent = new StatisticsComponent(moviesModel, new Date());
 
 api.getMovies()

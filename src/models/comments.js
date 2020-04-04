@@ -4,7 +4,7 @@ export default class Comments {
   }
 
   setComments(newComments) {
-    this._comments = [].concat(this._comments, newComments)
+    this._comments = [].concat(this._comments, newComments);
   }
 
   getComment(id) {
@@ -14,7 +14,7 @@ export default class Comments {
   removeComment(id) {
     const index = this._comments.find((comment) => comment.id === id);
 
-    if(index === -1) {
+    if (index === -1) {
       return false;
     }
     this._comments = [].concat(this._comments.slice(0, index), this._comments.slice(index + 1));

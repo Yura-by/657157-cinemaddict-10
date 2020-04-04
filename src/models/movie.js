@@ -29,6 +29,10 @@ export default class Movie {
   }
 
   toRAW() {
+    let commentsValue = this.comments;
+    if (this.comments.length > 0 && typeof this.comments[0] === `object`) {
+      commentsValue = commentsValue.map((comment) => comment.id);
+    }
     return {
       'id': this.id,
       'film_info': {
@@ -41,8 +45,8 @@ export default class Movie {
         'writers': this.filmInfo.writers,
         'actors': this.filmInfo.actors,
         'release': {
-          'date': this.release.date.toISOString(),
-          'release_country': this.release.releaseCountry
+          'date': this.filmInfo.release.date.toISOString(),
+          'release_country': this.filmInfo.release.releaseCountry
         },
         'runtime': this.filmInfo.runtime,
         'genre': this.filmInfo.genre,
@@ -52,10 +56,10 @@ export default class Movie {
         'personal_rating': this.userDetails.personalRating,
         'watchlist': this.userDetails.watchlist,
         'already_watched': this.userDetails.alreadyWatched,
-        'watching_date': this.userDetails.watchingDate.toISOString(),
+        'watching_date': this.userDetails.watchingDate ? this.userDetails.watchingDate.toISOString() : null,
         'favorite': this.userDetails.favorite
       },
-      'comments': this.comments
+      'comments': commentsValue
     };
   }
 
@@ -65,5 +69,9 @@ export default class Movie {
 
   static parseMovies(data) {
     return data.map(Movie.parseMovie);
+  }
+
+  static clone(data) {
+    return new Movie(data.toRAW());
   }
 }

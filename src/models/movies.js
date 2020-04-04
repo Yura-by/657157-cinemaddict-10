@@ -1,6 +1,7 @@
 import {getMoviesByFilter} from '../utils/filter.js';
 import {Filter} from '../const.js';
 import CommetnsModel from './comments.js';
+import Movie from './movie.js';
 
 export default class Movies {
   constructor() {
@@ -28,17 +29,14 @@ export default class Movies {
   }
 
   _addComments(movies) {
-    // if (!movies instanceof Array) {
-    //   const entireComments = movies.comments.map((idComment) => {
-    //     return this.getComment(idComment);
-    //   });
-    //   return Object.assign({}, movies, {comments: entireComments});
-    // }
     const moviesWithComments = movies.map((movie) => {
       const entireComments = movie.comments.map((idComment) => {
         return this.getComment(idComment);
       });
-      return Object.assign({}, movie, {comments: entireComments});
+      // return Object.assign({}, movie, {comments: entireComments});
+      const newMovie = Movie.clone(movie);
+      newMovie.comments = entireComments;
+      return newMovie;
     });
     return moviesWithComments;
   }
@@ -54,9 +52,7 @@ export default class Movies {
       return false;
     }
 
-    const updatedMovie = Object.assign({}, this._movies[index], {userDetails: newMovie.userDetails});
-
-    this._movies = [].concat(this._movies.slice(0, index), updatedMovie, this._movies.slice(index + 1));
+    this._movies = [].concat(this._movies.slice(0, index), newMovie, this._movies.slice(index + 1));
     this._dataChangeHandlers.forEach((handler) => handler());
     return true;
   }
