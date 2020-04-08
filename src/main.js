@@ -12,15 +12,15 @@ import API from './api.js';
 const AUTHORIZATION = `Basic HHITupoijk40981uk=6890`;
 const END_POINT = `https://htmlacademy-es-10.appspot.com/cinemaddict/`;
 
-window.addEventListener(`load`, () => {
-  navigator.serviceWorker.register(`./sw.js`)
-   .then(() => {
-     console.log(`yes register`);
-   })
-   .catch(() => {
-     console.log(`no register`);
-   });
-});
+// window.addEventListener(`load`, () => {
+//   navigator.serviceWorker.register(`./sw.js`)
+//    .then(() => {
+//      console.log(`yes register`);
+//    })
+//    .catch(() => {
+//      console.log(`no register`);
+//    });
+// });
 
 const api = new API(END_POINT, AUTHORIZATION);
 
