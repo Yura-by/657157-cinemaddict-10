@@ -16,6 +16,28 @@
   --font-size-bigger: 20px;
 }
 
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../fonts/opensans-bold-webfont.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../fonts/opensans-extrabold-webfont.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../fonts/opensans-regular-webfont.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
 
 html {
   background: #121213 url('../images/background.png') no-repeat 60% 0;

@@ -1,15 +1,3 @@
-// import {getComments} from './mock/movie.js';
-// import {generateMovies} from './mock/movie.js';
-// const COUNT_MOVIES = 7;
-
-// const movies = generateMovies(COUNT_MOVIES);
-
-// moviesModel.setMovies(movies);
-
-// movies.forEach((movie) => {
-//   moviesModel.setComments(getComments(movie.comments));
-// });
-
 import ProfileComponent from './components/profile.js';
 import FooterComponent from './components/footer.js';
 import StatisticsComponent from './components/statistics.js';
@@ -23,6 +11,16 @@ import API from './api.js';
 
 const AUTHORIZATION = `Basic HHITupoijk40981uk=6890`;
 const END_POINT = `https://htmlacademy-es-10.appspot.com/cinemaddict/`;
+
+window.addEventListener(`load`, () => {
+  navigator.serviceWorker.register(`./sw.js`)
+   .then(() => {
+     console.log(`yes register`);
+   })
+   .catch(() => {
+     console.log(`no register`);
+   });
+});
 
 const api = new API(END_POINT, AUTHORIZATION);
 
