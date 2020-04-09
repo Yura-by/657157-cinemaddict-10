@@ -7,10 +7,16 @@ import {render} from './utils/render.js';
 import MoviesModel from './models/movies.js';
 import FilterController from './controllers/filter.js';
 import {getAlreadyWatched} from './utils/common.js';
-import API from './api.js';
+import Api from './api/index.js';
+import Store from './api/store.js';
+import Provider from './api/provider.js';
 
 const AUTHORIZATION = `Basic HHITupoijk40981uk=6890`;
 const END_POINT = `https://htmlacademy-es-10.appspot.com/cinemaddict/`;
+
+const STORE_PREFIX = `cinemaddict-localstorage`;
+const STORE_VER = `v1`;
+const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
 
 // window.addEventListener(`load`, () => {
 //   navigator.serviceWorker.register(`./sw.js`)
@@ -22,23 +28,25 @@ const END_POINT = `https://htmlacademy-es-10.appspot.com/cinemaddict/`;
 //    });
 // });
 
-const api = new API(END_POINT, AUTHORIZATION);
+const api = new Api(END_POINT, AUTHORIZATION);
+const store = new Store(STORE_NAME, window.localStorage);
+const apiWithProvider = new Provider(api, store);
 
 const moviesModel = new MoviesModel();
 
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 const filterController = new FilterController(mainElement, moviesModel);
-const pageController = new PageController(mainElement, moviesModel, api);
+const pageController = new PageController(mainElement, moviesModel, apiWithProvider);
 const statisticsComponent = new StatisticsComponent(moviesModel, new Date());
 
-api.getMovies()
+apiWithProvider.getMovies()
   .then((response) => {
     moviesModel.setMovies(response);
     return response;
   })
   .then((response) => {
-    return Promise.all(response.map((movie) => api.getComments(movie.id)));
+    return Promise.all(response.map((movie) => apiWithProvider.getComments(movie.id)));
   })
   .then((response) => {
     response.forEach((it) => {
