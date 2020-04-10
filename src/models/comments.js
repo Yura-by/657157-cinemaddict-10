@@ -12,7 +12,7 @@ export default class Comments {
   }
 
   removeComment(id) {
-    const index = this._comments.find((comment) => comment.id === id);
+    const index = this._comments.findIndex((comment) => comment.id === id);
 
     if (index === -1) {
       return false;

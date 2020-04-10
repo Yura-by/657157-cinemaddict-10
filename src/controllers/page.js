@@ -173,7 +173,7 @@ export default class PageController {
 
   _onDataChange(movieController, oldData, newData, idComment) {
     if (newData === null) {
-      this._api.deleteComment(idComment)
+      this._api.deleteComment(idComment, movieController.getId())
         .then(() => {
           const isSuccess = this._moviesModel.removeComment(oldData.id, idComment);
           if (isSuccess) {
@@ -189,7 +189,6 @@ export default class PageController {
     if (oldData === null) {
       this._api.createComment(movieController.getId(), newData)
         .then((response) => {
-          console.log(response)
           const newComment = response.find((it) => it.comment === newData.comment);
           this._moviesModel.setComments(newComment);
           this._moviesModel.addCommentToMovie(movieController.getId(), newComment.id);

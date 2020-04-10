@@ -16,7 +16,9 @@ const END_POINT = `https://htmlacademy-es-10.appspot.com/cinemaddict/`;
 
 const STORE_PREFIX = `cinemaddict-localstorage`;
 const STORE_VER = `v1`;
+const STORE_COMMENTS = `comments`;
 const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
+const STORE_COMMENTS_NAME = `${STORE_COMMENTS}-${STORE_VER}`;
 
 // window.addEventListener(`load`, () => {
 //   navigator.serviceWorker.register(`./sw.js`)
@@ -29,7 +31,11 @@ const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
 // });
 
 const api = new Api(END_POINT, AUTHORIZATION);
-const store = new Store(STORE_NAME, window.localStorage);
+
+if (window.navigator.onLine) {
+  window.localStorage.clear();
+}
+const store = new Store(STORE_NAME, STORE_COMMENTS_NAME, window.localStorage);
 const apiWithProvider = new Provider(api, store);
 
 const moviesModel = new MoviesModel();
