@@ -1,5 +1,8 @@
 import {getDurationInFormat} from '../utils/common.js';
 import AbstractComponent from './abstract-component.js';
+import debounce from 'lodash.debounce';
+
+const DEBOUNCE_TIMEOUT = 500;
 
 const ACTIVE_CLASS = `film-card__controls-item--active`;
 
@@ -66,16 +69,16 @@ export default class Movie extends AbstractComponent {
 
   setAddToWatchlistHandler(handler) {
     const watchElement = this.getElement().querySelector(`.film-card__controls-item--add-to-watchlist`);
-    watchElement.addEventListener(`click`, handler);
+    watchElement.addEventListener(`click`, debounce(handler, DEBOUNCE_TIMEOUT));
   }
 
   setAsWatchedHandler(handler) {
     const asWatchElement = this.getElement().querySelector(`.film-card__controls-item--mark-as-watched`);
-    asWatchElement.addEventListener(`click`, handler);
+    asWatchElement.addEventListener(`click`, debounce(handler, DEBOUNCE_TIMEOUT));
   }
 
   setFavoriteHandler(handler) {
     const favoriteElement = this.getElement().querySelector(`.film-card__controls-item--favorite`);
-    favoriteElement.addEventListener(`click`, handler);
+    favoriteElement.addEventListener(`click`, debounce(handler, DEBOUNCE_TIMEOUT));
   }
 }

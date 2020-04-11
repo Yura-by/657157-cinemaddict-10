@@ -1,5 +1,6 @@
 import AbstractComponent from './abstract-component.js';
 import {getCommentDate} from '../utils/common.js';
+import he from 'he';
 
 // const gateDifferenceDays = (dateComment) => {
 //   const startDate = new Date(dateComment);
@@ -17,6 +18,7 @@ import {getCommentDate} from '../utils/common.js';
 const getCommentsMarkup = (comments) => {
   return comments.map((commentItem) => {
     const {id, emotion, comment, author, date} = commentItem;
+    const encodeTextComment = he.encode(comment);
     const coutnDays = getCommentDate(date);
     const imageMarkup = emotion ? `<img src="./images/emoji/${emotion}.png" width="55" height="55" alt="emoji"></img>` : ``;
     return (
@@ -25,7 +27,7 @@ const getCommentsMarkup = (comments) => {
           ${imageMarkup}
         </span>
         <div>
-          <p class="film-details__comment-text">${comment}</p>
+          <p class="film-details__comment-text">${encodeTextComment}</p>
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${author}</span>
             <span class="film-details__comment-day">${coutnDays}</span>

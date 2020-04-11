@@ -20,15 +20,13 @@ const STORE_COMMENTS = `comments`;
 const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
 const STORE_COMMENTS_NAME = `${STORE_COMMENTS}-${STORE_VER}`;
 
-// window.addEventListener(`load`, () => {
-//   navigator.serviceWorker.register(`./sw.js`)
-//    .then(() => {
-//      console.log(`yes register`);
-//    })
-//    .catch(() => {
-//      console.log(`no register`);
-//    });
-// });
+window.addEventListener(`load`, () => {
+  navigator.serviceWorker.register(`./sw.js`)
+   .then(() => {
+   })
+   .catch(() => {
+   });
+});
 
 const api = new Api(END_POINT, AUTHORIZATION);
 
@@ -84,11 +82,8 @@ window.addEventListener(`online`, () => {
   document.title = document.title.replace(`[offline]`, ``);
   if (!apiWithProvider.getSynchonize()) {
     apiWithProvider.sync()
-    .then((response) => {
-      console.log(response)
-    })
     .catch((error) => {
-      console.log(error)
+      window.title = error;
     });
   }
 });

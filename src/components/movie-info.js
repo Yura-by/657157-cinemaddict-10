@@ -2,6 +2,9 @@ import MovieDescriptionComponent from './movie-description.js';
 import MovieRatingComponent from './movie-rating.js';
 import MovieCommentsComponent from './movie-comments.js';
 import AbstractSmartComponent from './abstract-smart-component.js';
+import debounce from 'lodash.debounce';
+
+const DEBOUNCE_TIMEOUT = 500;
 
 const createMovieInfoTemplane = (description, rating, comments) => {
   const descriptionTemplate = description.getTemplate();
@@ -84,18 +87,18 @@ export default class MovieInfo extends AbstractSmartComponent {
 
   setAddToWatchlistHandler(handler) {
     const watchElement = this.getElement().querySelector(`input[name="watchlist"]`);
-    watchElement.addEventListener(`click`, handler);
+    watchElement.addEventListener(`click`, debounce(handler, DEBOUNCE_TIMEOUT));
     this._onAddToWatchlistClick = handler;
   }
 
   setAsWatchedHandler(handler) {
     const asWatchElement = this.getElement().querySelector(`input[name="watched"]`);
-    asWatchElement.addEventListener(`click`, handler);
+    asWatchElement.addEventListener(`click`, debounce(handler, DEBOUNCE_TIMEOUT));
   }
 
   setFavoriteHandler(handler) {
     const favoriteElement = this.getElement().querySelector(`input[name="favorite"]`);
-    favoriteElement.addEventListener(`click`, handler);
+    favoriteElement.addEventListener(`click`, debounce(handler, DEBOUNCE_TIMEOUT));
     this._onFavoriteClick = handler;
   }
 

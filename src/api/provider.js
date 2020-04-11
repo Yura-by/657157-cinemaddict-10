@@ -100,6 +100,9 @@ export default class Provider {
       const movies = Object.values(this._store.getAllMovies());
       this._api.sync(movies)
         .then((response) => {
+          response.updated.forEach((movie) => {
+            this._store.setMovie(movie.id, movie);
+          });
         });
       this._isSynchronized = true;
       return Promise.resolve();
