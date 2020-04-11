@@ -5,6 +5,7 @@ export default class Provider {
   constructor(api, store) {
     this._api = api;
     this._store = store;
+    this._isSynchronized = true;
   }
 
   getMovies() {
@@ -19,6 +20,8 @@ export default class Provider {
       );
     }
     const storeMovies = Object.values(this._store.getAllMovies());
+
+    this._isSynchronized = false;
 
     return Promise.resolve(Movie.parseMovies(storeMovies));
   }
@@ -36,6 +39,7 @@ export default class Provider {
     }
     const storeComments = Object.values(this._store.getAllComments());
 
+    this._isSynchronized = false;
     return Promise.resolve(Comment.parseComments(storeComments));
   }
 
@@ -54,6 +58,8 @@ export default class Provider {
     const fakeAuthor = `Someone`;
     const newComment = Comment.parseComment(Object.assign({}, commentItem.toRAW(), {id: fakeId, author: fakeAuthor}));
     this._store.setComment(newComment.id, newComment, filmId);
+    this._isSynchronized = false;
+
     return Promise.resolve([newComment]);
   }
 
@@ -67,6 +73,7 @@ export default class Provider {
       );
     }
     this._store.setMovie(data.id, data.toRAW());
+    this._isSynchronized = false;
 
     return Promise.resolve(data);
   }
@@ -79,8 +86,27 @@ export default class Provider {
     }
 
     this._store.removeComment(keyComment, keyMovie);
+    this._isSynchronized = false;
 
     return Promise.resolve();
+  }
+
+  getSynchonize() {
+    return this._isSynchronized;
+  }
+
+  sync() {
+    if (this._isOnline) {
+      const movies = Object.values(this._store.getAllMovies());
+      this._api.sync(movies)
+        .then((response) => {
+        });
+      this._isSynchronized = true;
+      return Promise.resolve();
+    }
+
+    return Promise.reject(new Error(`Sync data failed`));
+
   }
 
   _isOnline() {

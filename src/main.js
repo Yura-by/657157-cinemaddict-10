@@ -79,3 +79,20 @@ apiWithProvider.getMovies()
   });
 
 statisticsComponent.hide();
+
+window.addEventListener(`online`, () => {
+  document.title = document.title.replace(`[offline]`, ``);
+  if (!apiWithProvider.getSynchonize()) {
+    apiWithProvider.sync()
+    .then((response) => {
+      console.log(response)
+    })
+    .catch((error) => {
+      console.log(error)
+    });
+  }
+});
+
+window.addEventListener(`offline`, () => {
+  document.title += `[offline]`;
+});
